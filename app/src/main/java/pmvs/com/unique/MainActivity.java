@@ -1,9 +1,6 @@
 package pmvs.com.unique;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 
@@ -15,7 +12,7 @@ public class MainActivity extends MaterialNavigationDrawer {
 
     @Override
     public void init(Bundle savedInstanceState) {
-        this.setDrawerHeaderImage(R.drawable.mat3);
+        this.setDrawerHeaderImage(R.drawable.appnavbarpic);
 
         this.addSection(this.newSection("UniqueBook", new MasterFragment()));
         this.addSection(this.newSection("MyUniques", new MasterFragment()));
