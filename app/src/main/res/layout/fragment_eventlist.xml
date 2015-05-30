@@ -1,0 +1,75 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EventListFragment"
+    >
+
+    <LinearLayout
+
+        android:id="@+id/LinLay"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <EditText
+            android:id="@+id/textEt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="addMainText"/>
+
+        <EditText
+            android:id="@+id/textEt2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLength="7"
+            android:hint="AddSubText"/>
+
+        <EditText
+            android:id="@+id/colorEt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLength="7"
+            android:hint="add HEX color"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add"
+            android:id="@+id/addItem"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Open Subwindow"
+            android:id="@+id/master_button"
+            android:layout_gravity="center_horizontal" />
+    </LinearLayout>
+
+
+    <ImageButton
+            android:id="@+id/add_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="bottom"
+            android:tint="@android:color/white"
+            android:background="@drawable/iclauncher"
+            android:src="@android:drawable/ic_input_add"
+            android:layout_marginEnd="5dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignEnd="@+id/recycler"
+            android:layout_marginBottom="23dp"
+            android:clickable="true"
+            android:elevation="@dimen/activity_horizontal_margin" />
+
+
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"/>
+
+</LinearLayout>
