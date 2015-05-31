@@ -1,5 +1,7 @@
 package pmvs.com.unique.model;
 
+import com.google.android.gms.maps.model.LatLng;
+
 /**
  * Created by inot on 30.05.15.
  */
@@ -13,6 +15,8 @@ public class Unique {
     private String facebookName;
     private String twitterName;
     private Boolean favorite;
+    private String serverID;
+    private LatLng position;
 
     public Unique (String initName, int initLocalID, String initTag,
                   String initText, String initPhoneNumber, String initEMail,
@@ -26,7 +30,7 @@ public class Unique {
         this.facebookName=initFacebookName;
         this.twitterName=initTwitterName;
         this.favorite=initFavorite;
-
+        position= new LatLng(0,0);//Initializes position as an Object needs to be initialized before its value can be changed
     }
 
     public String getName() {
@@ -100,4 +104,12 @@ public class Unique {
     public void setFavorite(Boolean favorite) {
         this.favorite = favorite;
     }
+
+    public void setServerID(String serverID){this.serverID=serverID;}
+
+    public String getServerID(){return this.serverID;}
+
+    public void setPosition(LatLng position){this.position=position;}
+
+    public LatLng getPosition(){return this.position;}
 }
