@@ -20,8 +20,8 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<RecyclerViewHold
 
     private List<Event> mData = new ArrayList<>(); //Collections.emptyList();
 
-    public CustomRecyclerAdapter() {
-        // Pass context or other static stuff that will be needed.
+    public CustomRecyclerAdapter(List<Event> eventList) {
+       this.mData=eventList;
     }
 
     @Override
@@ -34,9 +34,11 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<RecyclerViewHold
 
     @Override
     public void onBindViewHolder(RecyclerViewHolder viewHolder, int position) {
-        viewHolder.title.setText(mData.get(position).text);
-        viewHolder.title2.setText(mData.get(position).text2);
-        viewHolder.icon.setBackgroundColor(Color.parseColor(mData.get(position).color));
+        Event eventForRecyclerView = mData.get(position);
+        viewHolder.title.setText(eventForRecyclerView.getName());
+        viewHolder.title2.setText(eventForRecyclerView.getSurname());
+        viewHolder.icon.setBackgroundColor(Color.parseColor(eventForRecyclerView.getColor()));
+       // viewHolder.icon.setBackgroundColor(Color.parseColor(mData.get(position).color));
     }
 
     @Override
@@ -59,6 +61,9 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<RecyclerViewHold
         mData.remove(position);
         notifyItemRemoved(position);
     }
+
+
+
 
 
 }

@@ -22,6 +22,15 @@ public class Event {
         return text;
     }
 
+    public String getSurname() {
+
+        return text2;
+    }
+
+    public String getColor() {
+
+        return color;
+    }
     public void setName(String initText) {
         text = initText;
     }

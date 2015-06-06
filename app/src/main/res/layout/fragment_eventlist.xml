@@ -13,7 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-
         <EditText
             android:id="@+id/textEt"
             android:layout_width="match_parent"
@@ -39,12 +38,6 @@
             android:layout_height="wrap_content"
             android:text="Add"
             android:id="@+id/addItem"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Open Subwindow"
-            android:id="@+id/master_button"
-            android:layout_gravity="center_horizontal" />
     </LinearLayout>
 
 
@@ -52,7 +45,7 @@
             android:id="@+id/add_button"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_gravity="bottom"
+            android:layout_gravity="bottom|right"
             android:tint="@android:color/white"
             android:background="@drawable/iclauncher"
             android:src="@android:drawable/ic_input_add"

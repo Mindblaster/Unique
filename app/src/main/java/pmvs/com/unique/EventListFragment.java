@@ -42,10 +42,9 @@ public class EventListFragment extends android.support.v4.app.Fragment implement
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.i("MaterialNavigationDrawer Master-Child", "Master created");
+        //Log.d("MaterialNavigationDrawer Master-Child", "Master created");
         //initialize Buttons
         View view = inflater.inflate(R.layout.fragment_eventlist, container, false);
-        ((Button) view.findViewById(R.id.master_button)).setOnClickListener(this);
         ((Button) view.findViewById(R.id.addItem)).setOnClickListener(this);
 
 
@@ -64,7 +63,7 @@ public class EventListFragment extends android.support.v4.app.Fragment implement
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // Setting the adapter.
-        mAdapter = new CustomRecyclerAdapter();
+        mAdapter = new CustomRecyclerAdapter(createList(10));
         mRecyclerView.setAdapter(mAdapter);
 
         //DEIN BUTTON: Listener auf Action Button um items zur Liste zu adden
@@ -102,24 +101,28 @@ public class EventListFragment extends android.support.v4.app.Fragment implement
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            //new child
-            case R.id.master_button:
-                ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(new ChildFragment(), "Child1 Title1");
-                break;
             //add to list
             case R.id.addItem:
                 addItem(v);
                 break;
             //new child
             case R.id.add_button:
-                ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(new ChildFragment(), "Child2 Title2");
+                ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(new ChildFragment(), "one subwindow is open");
 
                 break;
-
 
         }
     }
 
+    private List<Event> createList(int size) {
 
+        List<Event> result = new ArrayList<Event>();
+        for (int i = 1; i <= size; i++) {
+            Event exampleEvent = new Event("Name" + i, "Nachname" + i, "#cccccc");
+            result.add(exampleEvent);
+
+        }
+        return result;
+    }
 }
 
