@@ -24,7 +24,6 @@ public class ChildFragment extends android.support.v4.app.Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.i("MaterialNavigationDrawer Master-Child", "Child created");
-
         return inflater.inflate(R.layout.masterchild_child, container, false);
     }
 

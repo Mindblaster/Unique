@@ -1,9 +1,13 @@
 package pmvs.com.unique;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.parse.Parse;
+import com.parse.ParseException;
+
+import java.util.ArrayList;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 import pmvs.com.unique.model.Unique;
@@ -16,25 +20,32 @@ public class MainActivity extends MaterialNavigationDrawer {
 
     @Override
     public void init(Bundle savedInstanceState) {
-        Parse.initialize(this, "SjQPgPKS1km7nX6jEhTMJ8rRefDKzuS1gK7VQYeK", "twMXyl6pKRL3AyIrHz7vigUNDkp00rEe0ofpv95X");
         this.setDrawerHeaderImage(R.drawable.appnavbarpic);
 
         this.addSection(this.newSection("UniqueBook", new MasterFragment()));
         this.addSection(this.newSection("MyUniques", new MasterFragment()));
         this.addSection(this.newSection("Eventlist", new EventListFragment()));
-
+        //Intialization of Parse with API Key
+        Parse.initialize(this, "SjQPgPKS1km7nX6jEhTMJ8rRefDKzuS1gK7VQYeK", "twMXyl6pKRL3AyIrHz7vigUNDkp00rEe0ofpv95X");
 
         //testUnique
         Unique unique = new Unique("MyUnique",123,"personal","Please meet me!","08912345678","maxmustermann@test.de","max","mmuster",false);
-
         unique.setPosition(new LatLng(48.163327, 11.565246));
-        // Parse initialisation with keys
-        //Parse.enableLocalDatastore(this);
+        ParseManager parseManager =new ParseManager(getApplicationContext());
 
-        ParseManager parseManager =new ParseManager();
-        parseManager.uploadUnique(unique);
+        try {
+            unique.setServerID(parseManager.uploadUnique(unique));
+        }catch(ParseException pe){
+            Log.e("Failure", "Error Failed to Upload Unique");
+        }
+        //parseManager.updateLocation(unique.getServerID(),new LatLng(48.163327, 11.00000));
+        try {
+            ArrayList<Unique> uniques = parseManager.getUniquesByRad(5000, new LatLng(48.163327, 11.565245), unique.getServerID());
+            System.out.println("Uniques: " + uniques.get(0).getPhoneNumber());
+            System.out.println("how many : " + uniques.size());
+        }catch(ParseException pe){
 
-
+        }
 
     }
 
