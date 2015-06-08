@@ -5,6 +5,7 @@ import android.graphics.Outline;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -28,11 +29,12 @@ import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
  * A simple  Fragment subclass.
  * Will be event list
  */
-public class EventListFragment extends android.support.v4.app.Fragment implements View.OnClickListener {
+public class EventListFragment extends android.support.v4.app.Fragment implements View.OnClickListener,  SwipeRefreshLayout.OnRefreshListener {
 
     private RecyclerView mRecyclerView;
     private CustomRecyclerAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private EditText mText;
     private EditText mText2;
@@ -54,6 +56,11 @@ public class EventListFragment extends android.support.v4.app.Fragment implement
         mText2 = (EditText) view.findViewById(R.id.textEt2);
         mColor = (EditText) view.findViewById(R.id.colorEt);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler);
+
+        // Initializing SwipeWrapper for the RecyclerView
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setOnRefreshListener(this);
+
 
         // If the size of views will not change as the data changes.
         mRecyclerView.setHasFixedSize(true);
@@ -123,6 +130,15 @@ public class EventListFragment extends android.support.v4.app.Fragment implement
 
         }
         return result;
+    }
+
+    //animating the refresh with swipe and updates the RecyclerView
+    @Override
+    public void onRefresh() {
+        swipeRefreshLayout.setRefreshing(true);
+        mAdapter.notifyDataSetChanged();
+        // stopping swipe refresh
+        swipeRefreshLayout.setRefreshing(false);
     }
 }
 
