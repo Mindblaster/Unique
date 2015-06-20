@@ -19,4 +19,13 @@ public class ScheduledEvent {
     }
 
 
+    public String getUniqueServerID(){
+        return this.uniqueServerID;
+    }
+    public Date getFrom(){
+        return this.from;
+    }
+    public Date getTill(){
+        return this.till;
+    }
 }

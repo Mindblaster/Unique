@@ -1,22 +1,26 @@
 package pmvs.com.unique;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
+import android.app.job.JobParameters;
+import android.app.job.JobService;
+import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Message;
-import android.os.Messenger;
-import android.os.RemoteException;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.google.android.gms.location.LocationListener;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 import pmvs.com.unique.model.*;
 
@@ -25,15 +29,100 @@ import pmvs.com.unique.model.*;
  */
 public class UniqueService extends Service {
     ArrayList<ScheduledEvent> scheduledEvents;
+    public final int NEW_EVENT=0;
+    public final int DELETE_EVENT=1;
+    public final int START_SERVICE=2;
+    private DateStringConverter dateStringConverter;
+    private Timer timer;
+    public LocationManager locationManager;
+
+
+    public UniqueService(){
+    }
+
+
+    @Override
+    public void onCreate() {
+        Log.d("Service", "onCreate called");
+        scheduledEvents=new ArrayList<>();
+        timer = new Timer();
+    }
+
+
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.d("Service", "onstartCommand called");
+        dateStringConverter= new DateStringConverter();
+        switch(intent.getIntExtra("FLAG",3)) {
+            case (NEW_EVENT):
+                ScheduledEvent scheduledEvent = new ScheduledEvent(dateStringConverter.stringToDate(intent.getStringExtra("from")),dateStringConverter.stringToDate(intent.getStringExtra("till")),intent.getStringExtra("Unique_ServerID"));
+                scheduledEvents.add(scheduledEvent);
+
+                //StartEventTime
+                long toStartDiffInMs = scheduledEvent.getFrom().getTime() - new Date().getTime();
+                long toStartDiffInSec = TimeUnit.MILLISECONDS.toSeconds(toStartDiffInMs);
+
+                System.out.println("startTime: "+ toStartDiffInSec);
+                MyTimerTask myTimerTask = new MyTimerTask(scheduledEvent.getUniqueServerID(),scheduledEvent.getFrom(),scheduledEvent.getTill());
+
+                //If Event Start is in the Past Task is not Scheduled (Should either be caught by the UI or we can set the task to Start immediately
+                if(toStartDiffInSec>0) {
+                    timer.schedule(myTimerTask, scheduledEvent.getFrom());
+                }
+
+                break;
+            case (DELETE_EVENT):
+                for(int i=0;i<scheduledEvents.size();i++){
+                    if(scheduledEvents.get(i).getUniqueServerID().equals(intent.getStringExtra("Unique_ServerID"))){
+                        scheduledEvents.remove(i);
+                    }
+                }
+                break;
+            case START_SERVICE:
+                System.out.println("Service Started");
+                break;
+        }
+        return Service.START_STICKY;
+    }
 
     @Override
     public IBinder onBind(Intent intent) {
         return null;
     }
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        ScheduledEvent scheduledEvent = new ScheduledEvent((Date)intent.getSerializableExtra("FROM_DATE"),(Date)intent.getSerializableExtra("TILL_DATE"),intent.getStringExtra("UniqueServerID"));
-        scheduledEvents.add(scheduledEvents.size()-1,scheduledEvent);
-        return Service.START_STICKY;//has to be set to START_STICKY later
-        //return Service.START_NOT_STICKY;
+
+    private class MyTimerTask extends TimerTask {
+        private String uniqueServerID;
+        ParseManager parseManager;
+        private Date startingDate;
+        private Date endingDate;
+
+        public MyTimerTask(String uniqueServerID,Date startingDate,Date endingDate){
+            this.uniqueServerID=uniqueServerID;
+            parseManager=new ParseManager(getApplicationContext());
+            this.startingDate=startingDate;
+            this.endingDate=endingDate;
+        }
+
+        @Override
+        public void run() {
+            //StartEventTime
+            long execTimeInMs = endingDate.getTime() - startingDate.getTime();
+            long execTimeInNS = TimeUnit.MILLISECONDS.toNanos(execTimeInMs);
+
+            long startingTimeInNS=System.nanoTime();
+
+            System.out.println("Task begins!");
+            boolean toFinish = false;
+            while (!toFinish)
+            {
+                if(System.nanoTime()-startingTimeInNS>=execTimeInNS){
+                    toFinish=true;
+                    System.out.println("Task finished!");
+                }
+
+            }
+
+
+        }
+
     }
 }
