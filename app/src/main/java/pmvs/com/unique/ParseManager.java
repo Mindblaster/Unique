@@ -80,7 +80,6 @@ public class ParseManager {
 
     // Updates Location of Unique.
     public void updateLocation(String ServerID, final LatLng myPosition){
-        System.out.println(ServerID);
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Uniques");
         query.getInBackground(ServerID, new GetCallback<ParseObject>() {
             @Override

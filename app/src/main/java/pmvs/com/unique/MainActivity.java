@@ -66,8 +66,8 @@ public class MainActivity extends MaterialNavigationDrawer {
         // Test Event
         Intent newIntent = new Intent(MainActivity.this, UniqueService.class);
         newIntent.putExtra("FLAG",0);
-        newIntent.putExtra("from","20-06-2015 16:25:00");
-        newIntent.putExtra("till","20-06-2015 16:27:00");
+        newIntent.putExtra("from","20-06-2015 18:02:00");
+        newIntent.putExtra("till","20-06-2015 18:04:00");
         newIntent.putExtra("Unique_ServerID",unique.getServerID());
         startService(newIntent);
     }

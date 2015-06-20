@@ -6,13 +6,15 @@ import android.app.job.JobService;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.google.android.gms.location.LocationListener;
+
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -27,7 +29,7 @@ import pmvs.com.unique.model.*;
 /**
  * Created by Raphael on 07.06.2015.
  */
-public class UniqueService extends Service {
+public class UniqueService extends Service{
     ArrayList<ScheduledEvent> scheduledEvents;
     public final int NEW_EVENT=0;
     public final int DELETE_EVENT=1;
@@ -89,6 +91,7 @@ public class UniqueService extends Service {
         return null;
     }
 
+
     private class MyTimerTask extends TimerTask {
         private String uniqueServerID;
         ParseManager parseManager;
@@ -112,11 +115,20 @@ public class UniqueService extends Service {
 
             System.out.println("Task begins!");
             boolean toFinish = false;
+
+            LocationManager locationManager = (LocationManager)
+                    getSystemService(Context.LOCATION_SERVICE);
+
+            LocationListener locationListener = new UniqueLocationlistener(getApplicationContext(),uniqueServerID);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10,locationListener, Looper.getMainLooper());
+
+
             while (!toFinish)
             {
                 if(System.nanoTime()-startingTimeInNS>=execTimeInNS){
                     toFinish=true;
                     System.out.println("Task finished!");
+                    locationManager.removeUpdates(locationListener);
                 }
 
             }
