@@ -18,6 +18,11 @@ public class Unique {
     private String serverID;
     private LatLng position;
 
+    //for DB
+    public Unique(){
+
+    }
+
     public Unique (String initName, int initLocalID, String initTag,
                   String initText, String initPhoneNumber, String initEMail,
                   String initFacebookName, String initTwitterName, boolean initFavorite) {

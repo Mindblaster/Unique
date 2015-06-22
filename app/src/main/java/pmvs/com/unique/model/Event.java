@@ -10,22 +10,27 @@ public class Event {
 
     private int id;
     private String title;
-    private Date from;
-    private Date till;
+    private Date fromDate;
+    private Date tillDate;
     private String address;
-    private int myMyUniqueId;
+    private int myUniqueId;
     private boolean uniqueShared;
     private String eventPic;
     private List<Unique> receivedUniques;
     private int countAllReceivedUniques;
 
+    //constructor for dB
+    public Event(){
+
+    }
+    // Constructor with all parameters
     public Event(int initId, String initTitle, Date initFrom, Date initTill, String initAddress, int initMyUniqueID, boolean initUniqueShared, List<Unique> initReceivedUniques, String initEventPic) {
         this.id = initId;
         this.title = initTitle;
-        this.from = initFrom;
-        this.till = initTill;
+        this.fromDate = initFrom;
+        this.tillDate = initTill;
         this.address = initAddress;
-        this.myMyUniqueId = initMyUniqueID;
+        this.myUniqueId = initMyUniqueID;
         this.uniqueShared = initUniqueShared;
         this.eventPic = initEventPic;
         this.receivedUniques = initReceivedUniques;
@@ -37,8 +42,8 @@ public class Event {
     public Event(int initId, String initTitle, Date initFrom, Date initTill, int initCountAllReceivedUniques) {
         this.id = initId;
         this.title = initTitle;
-        this.from = initFrom;
-        this.till = initTill;
+        this.fromDate = initFrom;
+        this.tillDate = initTill;
         this.countAllReceivedUniques = initCountAllReceivedUniques;
 
     }
@@ -59,20 +64,20 @@ public class Event {
         this.title = title;
     }
 
-    public Date getFrom() {
-        return from;
+    public Date getFromDate() {
+        return fromDate;
     }
 
-    public void setFrom(Date from) {
-        this.from = from;
+    public void setFromDate(Date fromDate) {
+        this.fromDate = fromDate;
     }
 
-    public Date getTill() {
-        return till;
+    public Date getTillDate() {
+        return tillDate;
     }
 
-    public void setTill(Date till) {
-        this.till = till;
+    public void setTillDate(Date tillDate) {
+        this.tillDate = tillDate;
     }
 
     public String getAddress() {
@@ -83,12 +88,12 @@ public class Event {
         this.address = address;
     }
 
-    public int getMyMyUniqueId() {
-        return myMyUniqueId;
+    public int getMyUniqueId() {
+        return myUniqueId;
     }
 
-    public void setMyMyUniqueId(int myMyUniqueId) {
-        this.myMyUniqueId = myMyUniqueId;
+    public void setMyUniqueId(int myUniqueId) {
+        this.myUniqueId = myUniqueId;
     }
 
     public boolean isUniqueShared() {
