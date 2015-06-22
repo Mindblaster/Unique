@@ -20,7 +20,7 @@ import pmvs.com.unique.model.Unique;
  * Created by inot on 12.06.15.
  */
 
-public class DatabaseHelper extends SQLiteOpenHelper {
+public class DataBaseHelper extends SQLiteOpenHelper {
 
     // Debug tag
     private static final String LOG = "DatabaseHelper";
@@ -34,7 +34,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // all three tables
     private static final String TABLE_EVENTS = "events";
     private static final String TABLE_UNIQUES = "uniques";
+    private static final String TABLE_MYUNIQUES = "myuniques";
     private static final String TABLE_UNIQUE_EVENT = "uniques_events";
+    private static final String TABLE_MYUNIQUE_EVENT = "myuniques_events";
+
 
     //  column names for both table
     private static final String KEY_ID = "id";
@@ -50,6 +53,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_ISFAVORITE = "favorite";
     private static final String KEY_SERVERID = "serverID";
     private static final String KEY_POSITION = "position";
+
+    //myUnique Table columns
+
+    // unique Table - columns
+    private static final String KEY_MYUNIQUE_NAME = "name";
+    private static final String KEY_MYTAG = "tag";
+    private static final String KEY_MYTEXT = "text";
+    private static final String KEY_MYPHONENUM = "phonenumber";
+    private static final String KEY_MYEMAIL = "email";
+    private static final String KEY_MYFB = "facebookname";
+    private static final String KEY_MYTWITTER = "twittername";
+    //private static final String KEY_ISFAVORITE = "favorite";
+    private static final String KEY_MYSERVERID = "serverID";
+    private static final String KEY_MYPOSITION = "position";
+
 
     // EVENTS Table - column names
     private static final String KEY_EVENT_TITLE = "title";
@@ -67,8 +85,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final SimpleDateFormat formatter = new SimpleDateFormat(
             "yyyy-MM-dd HH:mm", Locale.ENGLISH);
 
-    // Table Create Statements
-    // Todo table create statement
+    // myUNIQUE_EVENTS Table - column names
+    private static final String KEY_MYUNIQUES_ID = "myunique_id";
+    //  private static final String KEY_MYEVENTS_ID = "event_id";
+
+
+    //
+    // Unique table create statement
     private static final String CREATE_TABLE_UNIQUES = "CREATE TABLE "
             + TABLE_UNIQUES + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
             + KEY_UNIQUE_NAME + " TEXT,"
@@ -79,9 +102,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + KEY_FB + " TEXT,"
             + KEY_TWITTER + " TEXT,"
             + KEY_ISFAVORITE + " TEXT,"
-//            + KEY_SERVERID + " TEXT,"
-//            + KEY_POSITION + " TEXT"
+            + KEY_SERVERID + " TEXT,"
+            //        + KEY_POSITION + " TEXT"
             + ")";
+
+    // Unique table create MyUniques
+    private static final String CREATE_TABLE_MYUNIQUES = "CREATE TABLE "
+            + TABLE_MYUNIQUES + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
+            + KEY_MYUNIQUE_NAME + " TEXT,"
+            + KEY_MYTAG + " TEXT,"
+            + KEY_MYTEXT + " TEXT,"
+            + KEY_MYPHONENUM + " TEXT,"
+            + KEY_MYEMAIL + " TEXT,"
+            + KEY_MYFB + " TEXT,"
+            + KEY_MYTWITTER + " TEXT,"
+            + KEY_MYSERVERID + " TEXT,"
+            //        + KEY_POSITION + " TEXT"
+            + ")";
+
 
     // Tag table create statement
     private static final String CREATE_TABLE_EVENTS = "CREATE TABLE "
@@ -96,14 +134,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + KEY_EVENT_PIC + " TEXT,"
             + ")";
 
-    // todo_tag table create statement
+    // unique_events table create statement
     private static final String CREATE_TABLE_UNIQUE_EVENT = "CREATE TABLE "
             + TABLE_UNIQUE_EVENT + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
             + KEY_EVENTS_ID + " INTEGER," + KEY_UNIQUES_ID + " INTEGER,"
-            +"ON DELETE CASCADE"
+            + "ON DELETE CASCADE"
+            + ")";
+    // myunique_events table create statement
+    private static final String CREATE_TABLE_MYUNIQUE_EVENT = "CREATE TABLE "
+            + TABLE_MYUNIQUE_EVENT + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
+            + KEY_EVENTS_ID + " INTEGER," + KEY_MYUNIQUES_ID + " INTEGER,"
+            + "ON DELETE CASCADE"
             + ")";
 
-    public DatabaseHelper(Context context) {
+    public DataBaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -113,7 +157,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // creating required tables
         db.execSQL(CREATE_TABLE_EVENTS);
         db.execSQL(CREATE_TABLE_UNIQUES);
+        db.execSQL(CREATE_TABLE_MYUNIQUES);
         db.execSQL(CREATE_TABLE_UNIQUE_EVENT);
+        db.execSQL(CREATE_TABLE_MYUNIQUE_EVENT);
     }
 
     @Override
@@ -121,11 +167,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // on upgrade drop older tables
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_EVENTS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_UNIQUES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_MYUNIQUES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_UNIQUE_EVENT);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_MYUNIQUE_EVENT);
+
 
         // create new tables
         onCreate(db);
     }
+
     /*
  * Creating a UniqueEntry
  */
@@ -144,16 +194,45 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         // insert row
         long unique_id = db.insert(TABLE_UNIQUES, null, values);
-        unique.setLocalID((int)unique_id);
+        unique.setLocalID((int) unique_id);
 
 
-        // assigning tags to todo
+        // assigning events to Uniques
 
-       createUniqueEventEntry (unique_id, event_id);
+        createUniqueEventEntry(unique_id, event_id);
 
 
         return unique_id;
     }
+
+    /*
+* Creating a MYUniqueEntry
+*/
+    public long createMyUniqueEntry(Unique myunique, int event_id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_MYUNIQUE_NAME, myunique.getName());
+        values.put(KEY_MYTAG, myunique.getTag());
+        values.put(KEY_MYTEXT, myunique.getText());
+        values.put(KEY_MYEMAIL, myunique.geteMail());
+        values.put(KEY_MYFB, myunique.getFacebookName());
+        values.put(KEY_MYTWITTER, myunique.getTwitterName());
+        values.put(KEY_MYPHONENUM, myunique.getPhoneNumber());
+
+        // insert row
+        long myunique_id = db.insert(TABLE_MYUNIQUES, null, values);
+        myunique.setLocalID((int) myunique_id);
+
+
+        // assigning uniques to events
+
+        // createUniqueEventEntry (myunique_id, event_id);
+
+
+        return myunique_id;
+    }
+
 
     /*
  * get single Unique
@@ -180,14 +259,42 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         unique.setTag(c.getString(c.getColumnIndex(KEY_TAG)));
         unique.setText(c.getString(c.getColumnIndex(KEY_TEXT)));
 
-        if(c.getInt(c.getColumnIndex(KEY_ISFAVORITE))==1)
-            {
-                unique.setFavorite(true);
-            }
+        if (c.getInt(c.getColumnIndex(KEY_ISFAVORITE)) == 1) {
+            unique.setFavorite(true);
+        }
         return unique;
     }
 
-   // SELECT * FROM uniques;
+    /*
+* get single myUnique
+*/
+    public Unique getMyUnique(long myunique_id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String selectQuery = "SELECT  * FROM " + TABLE_MYUNIQUES + " WHERE "
+                + KEY_ID + " = " + myunique_id;
+
+        Log.e(LOG, selectQuery);
+
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        if (c != null)
+            c.moveToFirst();
+
+        Unique unique = new Unique();
+        unique.setLocalID(c.getInt(c.getColumnIndex(KEY_ID)));
+        unique.setName((c.getString(c.getColumnIndex(KEY_MYUNIQUE_NAME))));
+        unique.seteMail(c.getString(c.getColumnIndex(KEY_MYEMAIL)));
+        unique.setTwitterName(c.getString(c.getColumnIndex(KEY_MYTWITTER)));
+        unique.setFacebookName(c.getString(c.getColumnIndex(KEY_MYFB)));
+        unique.setTag(c.getString(c.getColumnIndex(KEY_MYTAG)));
+        unique.setText(c.getString(c.getColumnIndex(KEY_MYTEXT)));
+
+        return unique;
+    }
+
+
+    // SELECT * FROM uniques;
     /*
      * getting all uniques
      * */
@@ -204,15 +311,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (c.moveToFirst()) {
             do {
                 Unique unique = new Unique();
-                 unique.setLocalID (c.getInt((c.getColumnIndex(KEY_ID))));
+                unique.setLocalID(c.getInt((c.getColumnIndex(KEY_ID))));
                 unique.setName((c.getString(c.getColumnIndex(KEY_UNIQUE_NAME))));
                 unique.seteMail(c.getString(c.getColumnIndex(KEY_EMAIL)));
                 unique.setTwitterName(c.getString(c.getColumnIndex(KEY_TWITTER)));
                 unique.setFacebookName(c.getString(c.getColumnIndex(KEY_FB)));
                 unique.setTag(c.getString(c.getColumnIndex(KEY_TAG)));
                 unique.setText(c.getString(c.getColumnIndex(KEY_TEXT)));
-                if(c.getInt(c.getColumnIndex(KEY_ISFAVORITE))==1)
-                {
+                if (c.getInt(c.getColumnIndex(KEY_ISFAVORITE)) == 1) {
                     unique.setFavorite(true);
                 }
 
@@ -223,15 +329,48 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return uniques;
     }
-   // SELECT * FROM uniques un, events ev, uniques_events unev WHERE ev.ev_name = ‘EXPO’ AND ev.id = unev.ev_id AND un.id = unev.unique_id;
+
+    //GET ALL MY UNQIES
+    public List<Unique> getAllMyUniques() {
+        List<Unique> uniques = new ArrayList<Unique>();
+        String selectQuery = "SELECT  * FROM " + TABLE_MYUNIQUES;
+
+        Log.e(LOG, selectQuery);
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (c.moveToFirst()) {
+            do {
+                Unique unique = new Unique();
+                unique.setLocalID(c.getInt((c.getColumnIndex(KEY_ID))));
+                unique.setName((c.getString(c.getColumnIndex(KEY_MYUNIQUE_NAME))));
+                unique.seteMail(c.getString(c.getColumnIndex(KEY_MYEMAIL)));
+                unique.setTwitterName(c.getString(c.getColumnIndex(KEY_MYTWITTER)));
+                unique.setFacebookName(c.getString(c.getColumnIndex(KEY_MYFB)));
+                unique.setTag(c.getString(c.getColumnIndex(KEY_MYTAG)));
+                unique.setText(c.getString(c.getColumnIndex(KEY_MYTEXT)));
+
+
+                // adding to uniq list
+                uniques.add(unique);
+            } while (c.moveToNext());
+        }
+
+        return uniques;
+    }
+
+
+    // SELECT * FROM uniques un, events ev, uniques_events unev WHERE ev.ev_name = ‘EXPO’ AND ev.id = unev.ev_id AND un.id = unev.unique_id;
     /*
      * getting all Unique of one Event
      * */
+    ///TODO EVENT_TITLE CHANGE!
     public List<Unique> getAllUniquesOfEvent(String event_title) {
         List<Unique> uniques = new ArrayList<Unique>();
-
         String selectQuery = "SELECT  * FROM " + TABLE_UNIQUES + " un, "
-                + TABLE_EVENTS+ " ev, " + TABLE_UNIQUE_EVENT + " unev WHERE ev."
+                + TABLE_EVENTS + " ev, " + TABLE_UNIQUE_EVENT + " unev WHERE ev."
                 + KEY_EVENT_TITLE + " = '" + event_title + "'" + " AND ev." + KEY_ID
                 + " = " + "unev." + KEY_EVENTS_ID + " AND un." + KEY_ID + " = "
                 + "unev." + KEY_UNIQUES_ID;
@@ -252,8 +391,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 unique.setFacebookName(c.getString(c.getColumnIndex(KEY_FB)));
                 unique.setTag(c.getString(c.getColumnIndex(KEY_TAG)));
                 unique.setText(c.getString(c.getColumnIndex(KEY_TEXT)));
-                if(c.getInt(c.getColumnIndex(KEY_ISFAVORITE))==1)
-                {
+                if (c.getInt(c.getColumnIndex(KEY_ISFAVORITE)) == 1) {
                     unique.setFavorite(true);
                 }
 
@@ -264,32 +402,78 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return uniques;
     }
-        /*
-        * set unique favorite
-        */
+
+    // SELECT * FROM myuniques un, events ev, myuniques_events unev WHERE ev.ev_name = ‘EXPO’ AND ev.id = unev.ev_id AND un.id = unev.unique_id;
+    /*
+     * getting all Unique of one Event
+     * */
+    public Unique getMYUniqueOfEvent(String event_title) {
+        Unique myUniques = new Unique();
+
+        String selectQuery = "SELECT  * FROM " + TABLE_MYUNIQUES + " myun, "
+                + TABLE_EVENTS + " ev, " + TABLE_MYUNIQUE_EVENT + " myunev WHERE ev."
+                + KEY_EVENT_TITLE + " = '" + event_title + "'" + " AND ev." + KEY_ID
+                + " = " + "myunev." + KEY_EVENTS_ID + " AND myun." + KEY_ID + " = "
+                + "myunev." + KEY_MYUNIQUES_ID;
+
+        Log.e(LOG, selectQuery);
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+        Unique unique = new Unique();
+
+        // looping through all rows and adding to list
+        if (c.moveToFirst()) {
+
+            unique.setLocalID(c.getInt((c.getColumnIndex(KEY_ID))));
+            unique.setName((c.getString(c.getColumnIndex(KEY_MYUNIQUE_NAME))));
+            unique.seteMail(c.getString(c.getColumnIndex(KEY_MYEMAIL)));
+            unique.setTwitterName(c.getString(c.getColumnIndex(KEY_MYTWITTER)));
+            unique.setFacebookName(c.getString(c.getColumnIndex(KEY_MYFB)));
+            unique.setTag(c.getString(c.getColumnIndex(KEY_MYTAG)));
+            unique.setText(c.getString(c.getColumnIndex(KEY_MYTEXT)));
+
+        }
+
+
+        return unique;
+    }
+
+    /*
+    * set unique favorite
+    */
     public int setUniqueFavorite(Unique unique) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        if(unique.getFavorite()){
+        if (unique.getFavorite()) {
             values.put(KEY_ISFAVORITE, 1);
-        }
-        else{
+        } else {
             values.put(KEY_ISFAVORITE, 0);
         }
 
 
         // updating row
         return db.update(TABLE_UNIQUES, values, KEY_ID + " = ?",
-                new String[] { String.valueOf(unique.getLocalID()) });
+                new String[]{String.valueOf(unique.getLocalID())});
     }
-     /*
-     * Deleting a unique
-     */
-        public void deleteUnique(long unique_id) {
+
+    /*
+    * Deleting a unique
+    */
+    public void deleteUnique(long unique_id) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_UNIQUES, KEY_ID + " = ?",
-                new String[] { String.valueOf(unique_id) });
+                new String[]{String.valueOf(unique_id)});
+    }
+
+    /*
+  * Deleting a myunique
+  */
+    public void deleteMYUnique(long myunique_id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_MYUNIQUES, KEY_ID + " = ?",
+                new String[]{String.valueOf(myunique_id)});
     }
 
     /*
@@ -305,25 +489,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_EVENT_FROMDATE, formatter.format(event.getFromDate()));
         values.put(KEY_EVENT_TILLDATE, formatter.format(event.getTillDate()));
 
-       if( event.isUniqueShared()){
+        if (event.isUniqueShared()) {
             values.put(KEY_EVENT_ISUNIQUESHARED, 1);
             values.put(KEY_EVENT_USEDUNIQUEID, event.getMyUniqueId());
+        } else {
+            values.put(KEY_EVENT_ISUNIQUESHARED, 0);
+            values.put(KEY_EVENT_USEDUNIQUEID, 0);
         }
-        else{
-           values.put(KEY_EVENT_ISUNIQUESHARED, 0);
-           values.put(KEY_EVENT_USEDUNIQUEID, 0);
-       }
+
+        long myunqiue_id = event.getMyUniqueId();
 
         // insert row
         long event_id = db.insert(TABLE_EVENTS, null, values);
-
+        //just because of needed event id after inserting in the DB
+        if (event.isUniqueShared()) {
+            createMyUniqueEventEntry(myunqiue_id, event_id);
+        }
         return event_id;
     }
 
     //SELECT * FROM EVENTS;
+
     /**
-     * getting all tags
-     * */
+     * getting all events
+     */
     public List<Event> getAllEvents() {
         List<Event> events = new ArrayList<Event>();
         String selectQuery = "SELECT  * FROM " + TABLE_EVENTS;
@@ -354,7 +543,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     /*
- * Updating a tag
+ * Updating a Event
  */
     public int updateEvent(Event event) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -362,40 +551,40 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(KEY_EVENT_TITLE, event.getTitle());
         //other fields follows next time
-        //TODO
+        //
 
         // updating row
         return db.update(TABLE_EVENTS, values, KEY_ID + " = ?",
-                new String[] { String.valueOf(event.getId()) });
+                new String[]{String.valueOf(event.getId())});
     }
 
 
     /*
- * Deleting a tag
+ * Deleting a event
  */
     public void deleteEvent(Event event, boolean should_delete_all_event_uniques) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         // before deleting event
-        // check if uniques under this tag should also be deleted
+        // check if uniques under this event should also be deleted
         if (should_delete_all_event_uniques) {
-            // get all uniques under this tag
+            // get all uniques under this event
             List<Unique> allEventUniques = getAllUniquesOfEvent(event.getTitle());
 
             // delete all Uniques
             for (Unique unique : allEventUniques) {
-               // delete unique
-               deleteUnique(unique.getLocalID());
-                }
+                // delete unique
+                deleteUnique(unique.getLocalID());
             }
+        }
 
-        // now delete the tag
+        // now delete the event
         db.delete(TABLE_EVENTS, KEY_ID + " = ?",
-              new String[] { String.valueOf(event.getId()) });
+                new String[]{String.valueOf(event.getId())});
     }
 
     /*
-     * Creating todo_tag
+     * Creating unique_event
      */
     public long createUniqueEventEntry(long unique_id, long event_id) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -405,6 +594,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_EVENTS_ID, event_id);
 
         long id = db.insert(TABLE_UNIQUE_EVENT, null, values);
+
+        return id;
+    }
+
+    /*
+     * Creating unique_event
+     */
+    public long createMyUniqueEventEntry(long myunique_id, long event_id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_MYUNIQUES_ID, myunique_id);
+        values.put(KEY_EVENTS_ID, event_id);
+
+        long id = db.insert(TABLE_MYUNIQUE_EVENT, null, values);
 
         return id;
     }
