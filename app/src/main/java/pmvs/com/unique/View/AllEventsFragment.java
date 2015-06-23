@@ -1,9 +1,7 @@
-package pmvs.com.unique;
-
+package pmvs.com.unique.View;
 
 import android.graphics.Outline;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,32 +11,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
-
+import pmvs.com.unique.ChildFragment;
+import pmvs.com.unique.R;
+import pmvs.com.unique.View.RecyclerViewForEvents.RecyclerAdapterForEvents;
+import pmvs.com.unique.database.DataBaseHelper;
+import pmvs.com.unique.model.Event;
+import pmvs.com.unique.model.Unique;
 
 /**
- * inot
- * A simple  Fragment subclass.
- * Will be event list
+ * Created by inot on 15.06.15.
  */
-public class EventListFragment extends android.support.v4.app.Fragment implements View.OnClickListener,  SwipeRefreshLayout.OnRefreshListener {
+public class AllEventsFragment extends android.support.v4.app.Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     private RecyclerView mRecyclerView;
-    private CustomRecyclerAdapter mAdapter;
+    private RecyclerAdapterForEvents mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private SwipeRefreshLayout swipeRefreshLayout;
-
-    private EditText mText;
-    private EditText mText2;
-    private EditText mColor;
+    private DataBaseHelper dataBaseHelper;
 
     private List<Event> mData = new ArrayList<>();
 
@@ -46,21 +43,16 @@ public class EventListFragment extends android.support.v4.app.Fragment implement
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //Log.d("MaterialNavigationDrawer Master-Child", "Master created");
         //initialize Buttons
-        View view = inflater.inflate(R.layout.fragment_eventlist, container, false);
-        ((Button) view.findViewById(R.id.addItem)).setOnClickListener(this);
+        View view = inflater.inflate(R.layout.alleventsrecview, container, false);
+        //((Button) view.findViewById(R.id.addItem2)).setOnClickListener(this);
 
 
         // Initializing views.
-
-        mText = (EditText) view.findViewById(R.id.textEt);
-        mText2 = (EditText) view.findViewById(R.id.textEt2);
-        mColor = (EditText) view.findViewById(R.id.colorEt);
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerId);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler);
 
         // Initializing SwipeWrapper for the RecyclerView
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setOnRefreshListener(this);
-
 
         // If the size of views will not change as the data changes.
         mRecyclerView.setHasFixedSize(true);
@@ -69,12 +61,21 @@ public class EventListFragment extends android.support.v4.app.Fragment implement
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
+        dataBaseHelper = new DataBaseHelper(getActivity());
+        try {
+            createList(6);
+        } catch (ParseException e) {
+            // ignore this
+        }
+
         // Setting the adapter.
-        mAdapter = new CustomRecyclerAdapter(createList(10));
+        mAdapter = new RecyclerAdapterForEvents(retrieveEvents());
+        dataBaseHelper.closeDB();
+
         mRecyclerView.setAdapter(mAdapter);
 
         //DEIN BUTTON: Listener auf Action Button um items zur Liste zu adden
-        View addButton = (View) view.findViewById(R.id.add_button);
+        View addButton = (View) view.findViewById(R.id.addItem2);
         addButton.setOnClickListener(this);
 
         //Wichtig, da source Image viereckig ist und wir einen Runden Button wollen
@@ -86,51 +87,52 @@ public class EventListFragment extends android.support.v4.app.Fragment implement
             }
         });
 
-
         return view;
-    }
-
-    // Called when add button is clicked.
-    public void addItem(View view) {
-
-        // Add data locally to the list.
-        Event dataToAdd = new Event(
-                mText.getText().toString(),
-                mText2.getText().toString(),
-                mColor.getText().toString());
-        mData.add(dataToAdd);
-
-        // Update adapter.
-        mAdapter.addItem(mData.size() - 1, dataToAdd);
     }
 
     //OnclickListener for all Buttons
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            //add to list
-            case R.id.addItem:
-                addItem(v);
-                break;
+
             //new child
-            case R.id.add_button:
+            case R.id.addItem2:
                 ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(new ChildFragment(), "one subwindow is open");
 
                 break;
-
         }
     }
 
-    private List<Event> createList(int size) {
-
-        List<Event> result = new ArrayList<Event>();
-        for (int i = 1; i <= size; i++) {
-            Event exampleEvent = new Event("Name" + i, "Nachname" + i, "#cccccc");
-            result.add(exampleEvent);
-
+    public List<Event> createList(int size) throws ParseException {
+        List<Event> result = new ArrayList<>();
+        SimpleDateFormat simpleDate = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+        String dateInString = "22-01-2015 10:20:56";
+        String dateInString2 = "22-01-2015 10:49:40";
+        Date dateFrom = null, dateTill = null;
+        try {
+            dateFrom = simpleDate.parse(dateInString);
+            dateTill = simpleDate.parse(dateInString2);
+        } catch (Exception e) {
+            // ignore this
         }
+
+        for (int i = 1; i <= size; i++) {
+            // int initId, String initTitle, Date initFrom, Date initTill, String initAddress, int initMyUniqueID, boolean initUniqueShared, List<Unique> initReceivedUniques, String initEventPic) {
+            List<Unique> listUnique = new ArrayList<>();
+            Event exampleEvent = new Event(
+                    0, "ExpoHannover" + i, dateFrom, dateTill, "Strandstr 11,  Nichtmünchen", 0, false, listUnique, "kkk.jpg");
+            result.add(exampleEvent);
+            dataBaseHelper.createEventEntry(exampleEvent);
+            Log.e("event count", "event count: " + dataBaseHelper.getEventCount());
+        }
+
         return result;
     }
+
+    public List<Event> retrieveEvents() {
+        return dataBaseHelper.getAllEvents();
+    }
+
 
     //animating the refresh with swipe and updates the RecyclerView
     @Override
@@ -141,4 +143,3 @@ public class EventListFragment extends android.support.v4.app.Fragment implement
         swipeRefreshLayout.setRefreshing(false);
     }
 }
-

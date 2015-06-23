@@ -19,6 +19,7 @@ import com.parse.ParseException;
 import java.util.ArrayList;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
+import pmvs.com.unique.View.AllEventsFragment;
 import pmvs.com.unique.model.Unique;
 
 /**
@@ -33,7 +34,8 @@ public class MainActivity extends MaterialNavigationDrawer {
         this.setDrawerHeaderImage(R.drawable.appnavbarpic);
 
         this.addSection(this.newSection("UniqueBook", new MasterFragment()));
-        this.addSection(this.newSection("MyUniques", new MasterFragment()));
+//        this.addSection(this.newSection("MyUniques", new MasterFragment()));
+        this.addSection(this.newSection("newEventList", new AllEventsFragment()));
         this.addSection(this.newSection("Eventlist", new EventListFragment()));
 
         //Intialization of Parse with API Key
@@ -41,7 +43,7 @@ public class MainActivity extends MaterialNavigationDrawer {
 
         //Start Service
         Intent intent = new Intent(MainActivity.this, UniqueService.class);
-        intent.putExtra("FLAG",2);
+        intent.putExtra("FLAG", 2);
         startService(intent);
 
         //testUnique

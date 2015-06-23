@@ -19,7 +19,6 @@ import pmvs.com.unique.model.Unique;
 /**
  * Created by inot on 12.06.15.
  */
-
 public class DataBaseHelper extends SQLiteOpenHelper {
 
     // Debug tag
@@ -56,7 +55,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     //myUnique Table columns
 
-    // unique Table - columns
     private static final String KEY_MYUNIQUE_NAME = "name";
     private static final String KEY_MYTAG = "tag";
     private static final String KEY_MYTEXT = "text";
@@ -83,7 +81,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private static final String KEY_UNIQUES_ID = "unique_id";
     private static final String KEY_EVENTS_ID = "event_id";
     private static final SimpleDateFormat formatter = new SimpleDateFormat(
-            "yyyy-MM-dd HH:mm", Locale.ENGLISH);
+            "dd-MM-yyyy HH:mm:ss", Locale.ENGLISH);
 
     // myUNIQUE_EVENTS Table - column names
     private static final String KEY_MYUNIQUES_ID = "myunique_id";
@@ -102,8 +100,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             + KEY_FB + " TEXT,"
             + KEY_TWITTER + " TEXT,"
             + KEY_ISFAVORITE + " TEXT,"
-            + KEY_SERVERID + " TEXT,"
-            //        + KEY_POSITION + " TEXT"
+            + KEY_SERVERID + " TEXT"
+            //","        + KEY_POSITION + " TEXT"
             + ")";
 
     // Unique table create MyUniques
@@ -116,8 +114,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             + KEY_MYEMAIL + " TEXT,"
             + KEY_MYFB + " TEXT,"
             + KEY_MYTWITTER + " TEXT,"
-            + KEY_MYSERVERID + " TEXT,"
-            //        + KEY_POSITION + " TEXT"
+            + KEY_MYSERVERID + " TEXT"
+            //","        + KEY_POSITION + " TEXT"
             + ")";
 
 
@@ -126,25 +124,25 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             + TABLE_EVENTS +
             "(" + KEY_ID + " INTEGER PRIMARY KEY,"
             + KEY_EVENT_TITLE + " TEXT,"
-            + KEY_EVENT_FROMDATE + " DATETIME"
-            + KEY_EVENT_TILLDATE + " DATETIME"
+            + KEY_EVENT_FROMDATE + " DATETIME,"
+            + KEY_EVENT_TILLDATE + " DATETIME,"
             + KEY_EVENT_ADDRESS + " TEXT,"
             + KEY_EVENT_USEDUNIQUEID + " TEXT,"
             + KEY_EVENT_ISUNIQUESHARED + " INTEGER,"
-            + KEY_EVENT_PIC + " TEXT,"
+            + KEY_EVENT_PIC + " TEXT"
             + ")";
 
     // unique_events table create statement
     private static final String CREATE_TABLE_UNIQUE_EVENT = "CREATE TABLE "
             + TABLE_UNIQUE_EVENT + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
-            + KEY_EVENTS_ID + " INTEGER," + KEY_UNIQUES_ID + " INTEGER,"
-            + "ON DELETE CASCADE"
+            + KEY_EVENTS_ID + " INTEGER," + KEY_UNIQUES_ID + " INTEGER"
+            //+ ", ON DELETE CASCADE"
             + ")";
     // myunique_events table create statement
     private static final String CREATE_TABLE_MYUNIQUE_EVENT = "CREATE TABLE "
             + TABLE_MYUNIQUE_EVENT + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
-            + KEY_EVENTS_ID + " INTEGER," + KEY_MYUNIQUES_ID + " INTEGER,"
-            + "ON DELETE CASCADE"
+            + KEY_EVENTS_ID + " INTEGER," + KEY_MYUNIQUES_ID + " INTEGER"
+            //+ ", ON DELETE CASCADE"
             + ")";
 
     public DataBaseHelper(Context context) {
@@ -176,9 +174,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    /*
- * Creating a UniqueEntry
- */
+    /**
+     * Creating a UniqueEntry
+     */
     public long createUniqueEntry(Unique unique, int event_id) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -205,9 +203,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return unique_id;
     }
 
-    /*
-* Creating a MYUniqueEntry
-*/
+    /**
+     * Creating a MYUniqueEntry
+     */
     public long createMyUniqueEntry(Unique myunique, int event_id) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -234,9 +232,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
 
 
-    /*
- * get single Unique
- */
+    /**
+     * get single Unique
+     */
     public Unique getUnique(long unique_id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -265,9 +263,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return unique;
     }
 
-    /*
-* get single myUnique
-*/
+    /**
+     * get single myUnique
+     */
     public Unique getMyUnique(long myunique_id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -295,9 +293,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
 
     // SELECT * FROM uniques;
-    /*
+
+    /**
      * getting all uniques
-     * */
+     */
     public List<Unique> getAllUniques() {
         List<Unique> uniques = new ArrayList<Unique>();
         String selectQuery = "SELECT  * FROM " + TABLE_UNIQUES;
@@ -330,7 +329,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return uniques;
     }
 
-    //GET ALL MY UNQIES
+    //GET ALL MY UNUQIES
     public List<Unique> getAllMyUniques() {
         List<Unique> uniques = new ArrayList<Unique>();
         String selectQuery = "SELECT  * FROM " + TABLE_MYUNIQUES;
@@ -363,9 +362,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
 
     // SELECT * FROM uniques un, events ev, uniques_events unev WHERE ev.ev_name = ‘EXPO’ AND ev.id = unev.ev_id AND un.id = unev.unique_id;
-    /*
+
+    /**
      * getting all Unique of one Event
-     * */
+     */
     ///TODO EVENT_TITLE CHANGE!
     public List<Unique> getAllUniquesOfEvent(String event_title) {
         List<Unique> uniques = new ArrayList<Unique>();
@@ -404,9 +404,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
 
     // SELECT * FROM myuniques un, events ev, myuniques_events unev WHERE ev.ev_name = ‘EXPO’ AND ev.id = unev.ev_id AND un.id = unev.unique_id;
-    /*
+
+    /**
      * getting all Unique of one Event
-     * */
+     */
     public Unique getMYUniqueOfEvent(String event_title) {
         Unique myUniques = new Unique();
 
@@ -439,9 +440,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return unique;
     }
 
-    /*
-    * set unique favorite
-    */
+    /**
+     * set unique favorite
+     */
     public int setUniqueFavorite(Unique unique) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -458,27 +459,27 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 new String[]{String.valueOf(unique.getLocalID())});
     }
 
-    /*
-    * Deleting a unique
-    */
+    /**
+     * Deleting a unique
+     */
     public void deleteUnique(long unique_id) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_UNIQUES, KEY_ID + " = ?",
                 new String[]{String.valueOf(unique_id)});
     }
 
-    /*
-  * Deleting a myunique
-  */
+    /**
+     * Deleting a myunique
+     */
     public void deleteMYUnique(long myunique_id) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_MYUNIQUES, KEY_ID + " = ?",
                 new String[]{String.valueOf(myunique_id)});
     }
 
-    /*
-    * Creating evententry
-    */
+    /**
+     * Creating evententry
+     */
     public long createEventEntry(Event event) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -542,9 +543,25 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return events;
     }
 
-    /*
- * Updating a Event
- */
+
+    /**
+     * getting event count
+     */
+    public int getEventCount() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String countQuery = "SELECT  * FROM " + TABLE_EVENTS;
+        Cursor cursor = db.rawQuery(countQuery, null);
+
+        int count = cursor.getCount();
+        cursor.close();
+
+        // return count
+        return count;
+    }
+
+    /**
+     * Updating a Event
+     */
     public int updateEvent(Event event) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -559,9 +576,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
 
 
-    /*
- * Deleting a event
- */
+    /**
+     * Deleting a event
+     */
     public void deleteEvent(Event event, boolean should_delete_all_event_uniques) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -583,7 +600,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 new String[]{String.valueOf(event.getId())});
     }
 
-    /*
+    /**
      * Creating unique_event
      */
     public long createUniqueEventEntry(long unique_id, long event_id) {
@@ -598,7 +615,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return id;
     }
 
-    /*
+    /**
      * Creating unique_event
      */
     public long createMyUniqueEventEntry(long myunique_id, long event_id) {
