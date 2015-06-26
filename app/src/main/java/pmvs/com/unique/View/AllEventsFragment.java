@@ -21,7 +21,8 @@ import java.util.List;
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 import pmvs.com.unique.ChildFragment;
 import pmvs.com.unique.R;
-import pmvs.com.unique.View.RecyclerViewForEvents.RecyclerAdapterForEvents;
+import pmvs.com.unique.View.RecyclerViewForEvents.RecyclerAdapterForFutureEvents;
+import pmvs.com.unique.View.RecyclerViewForEvents.RecyclerAdapterForPastEvents;
 import pmvs.com.unique.database.DataBaseHelper;
 import pmvs.com.unique.model.Event;
 import pmvs.com.unique.model.Unique;
@@ -31,9 +32,12 @@ import pmvs.com.unique.model.Unique;
  */
 public class AllEventsFragment extends android.support.v4.app.Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
-    private RecyclerView mRecyclerView;
-    private RecyclerAdapterForEvents mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
+    private RecyclerView mFutureRecyclerView;
+    private RecyclerView mPastRecyclerView;
+    private RecyclerAdapterForFutureEvents mFutureAdapter;
+    private RecyclerAdapterForPastEvents mPastAdapter;
+    private RecyclerView.LayoutManager mFutureLayoutManager;
+    private RecyclerView.LayoutManager mPastLayoutManager;
     private SwipeRefreshLayout swipeRefreshLayout;
     private DataBaseHelper dataBaseHelper;
 
@@ -48,32 +52,41 @@ public class AllEventsFragment extends android.support.v4.app.Fragment implement
 
 
         // Initializing views.
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler);
+        mFutureRecyclerView = (RecyclerView) view.findViewById(R.id.futurerecycler);
+        mPastRecyclerView = (RecyclerView) view.findViewById(R.id.pastrecycler);
 
         // Initializing SwipeWrapper for the RecyclerView
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
         swipeRefreshLayout.setOnRefreshListener(this);
 
         // If the size of views will not change as the data changes.
-        mRecyclerView.setHasFixedSize(true);
+        mFutureRecyclerView.setHasFixedSize(true);
+        mPastRecyclerView.setHasFixedSize(true);
 
         // Setting the LayoutManager.
-        mLayoutManager = new LinearLayoutManager(getActivity());
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        mFutureLayoutManager = new LinearLayoutManager(getActivity());
+        mFutureRecyclerView.setLayoutManager(mFutureLayoutManager);
+
+        //IMPORTANT !Does it work?
+
+        mPastLayoutManager = new LinearLayoutManager(getActivity());
+        mPastRecyclerView.setLayoutManager(mPastLayoutManager);
+
 
         dataBaseHelper = new DataBaseHelper(getActivity());
-        try {
-            createList(6);
-        } catch (ParseException e) {
+    ///    try {
+     //       createList(6);
+       ///    } catch (ParseException e) {
             // ignore this
-        }
+       // }
 
         // Setting the adapter.
-        mAdapter = new RecyclerAdapterForEvents(retrieveEvents());
+        mFutureAdapter = new RecyclerAdapterForFutureEvents(retrieveEvents());
+        mPastAdapter = new RecyclerAdapterForPastEvents(retrieveEvents());
         dataBaseHelper.closeDB();
 
-        mRecyclerView.setAdapter(mAdapter);
-
+        mFutureRecyclerView.setAdapter(mFutureAdapter);
+        mPastRecyclerView.setAdapter(mPastAdapter);
         //DEIN BUTTON: Listener auf Action Button um items zur Liste zu adden
         View addButton = (View) view.findViewById(R.id.addItem2);
         addButton.setOnClickListener(this);
@@ -138,7 +151,7 @@ public class AllEventsFragment extends android.support.v4.app.Fragment implement
     @Override
     public void onRefresh() {
         swipeRefreshLayout.setRefreshing(true);
-        mAdapter.notifyDataSetChanged();
+        mFutureAdapter.notifyDataSetChanged();
         // stopping swipe refresh
         swipeRefreshLayout.setRefreshing(false);
     }

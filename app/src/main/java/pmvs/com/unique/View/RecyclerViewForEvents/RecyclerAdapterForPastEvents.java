@@ -15,31 +15,31 @@ import pmvs.com.unique.R;
 import pmvs.com.unique.model.Event;
 
 /**
- * Created by inot on 25.05.15.
- * adapter for handling operations on the RecyclerView without comments
+ * Created by inot on 26.06.15.
  */
-public class RecyclerAdapterForEvents extends RecyclerView.Adapter<RecyclerViewHolderForEvents> {
+public class RecyclerAdapterForPastEvents  extends RecyclerView.Adapter<RecyclerViewHolderForPastEvents> {
 
     private List<Event> mData = new ArrayList<>();
 
-    public RecyclerAdapterForEvents(List<Event> eventList) {
+    public RecyclerAdapterForPastEvents (List<Event> eventList) {
         this.mData = eventList;
     }
 
     @Override
-    public RecyclerViewHolderForEvents onCreateViewHolder(ViewGroup viewGroup, int position) {
+    public RecyclerViewHolderForPastEvents onCreateViewHolder(ViewGroup viewGroup, int position) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-        View eventItem = inflater.inflate(R.layout.event_item, viewGroup, false);
-        return new RecyclerViewHolderForEvents(eventItem);
+        View eventItem = inflater.inflate(R.layout.event_past_item, viewGroup, false);
+        return new RecyclerViewHolderForPastEvents(eventItem);
     }
 
     @Override
-    public void onBindViewHolder(RecyclerViewHolderForEvents viewHolder, int position) {
+    public void onBindViewHolder(RecyclerViewHolderForPastEvents viewHolder, int position) {
         Event eventForRecyclerView = mData.get(position);
         viewHolder.title.setText(eventForRecyclerView.getTitle());
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
         viewHolder.address.setText(dateFormat.format(eventForRecyclerView.getTillDate()));
         viewHolder.icon.setBackgroundColor(Color.parseColor("#cccccc"));
+        viewHolder.amount.setText("32");
         // viewHolder.icon.setBackgroundColor(Color.parseColor(mData.get(position).color));
     }
 

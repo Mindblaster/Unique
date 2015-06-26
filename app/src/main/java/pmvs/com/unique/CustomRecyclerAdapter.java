@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -37,7 +36,7 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<RecyclerViewHold
         Event eventForRecyclerView = mData.get(position);
         viewHolder.title.setText(eventForRecyclerView.getName());
         viewHolder.title2.setText(eventForRecyclerView.getSurname());
-        viewHolder.icon.setBackgroundColor(Color.parseColor(eventForRecyclerView.getColor()));
+        viewHolder.icon.setBackgroundColor(Color.parseColor("#cccccc"));
        // viewHolder.icon.setBackgroundColor(Color.parseColor(mData.get(position).color));
     }
 
