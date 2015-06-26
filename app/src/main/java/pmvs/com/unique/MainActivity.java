@@ -4,6 +4,8 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Message;
@@ -33,45 +35,48 @@ public class MainActivity extends MaterialNavigationDrawer {
     public void init(Bundle savedInstanceState) {
         this.setDrawerHeaderImage(R.drawable.appnavbarpic);
 
-        this.addSection(this.newSection("UniqueBook", new MasterFragment()));
+          this.addSection(this.newSection("UniqueBook", new MasterFragment()));
 //        this.addSection(this.newSection("MyUniques", new MasterFragment()));
-        this.addSection(this.newSection("newEventList", new AllEventsFragment()));
-        this.addSection(this.newSection("Eventlist", new EventListFragment()));
+          this.addSection(this.newSection("newEventList", new AllEventsFragment()));
+          this.addSection(this.newSection("Eventlist", new EventListFragment()));
+
+          Parse.initialize(this, "SjQPgPKS1km7nX6jEhTMJ8rRefDKzuS1gK7VQYeK", "twMXyl6pKRL3AyIrHz7vigUNDkp00rEe0ofpv95X");
+            //Start Service
+            Intent intent = new Intent(MainActivity.this, UniqueService.class);
+            intent.putExtra("FLAG", 2);
+            startService(intent);
 
         //Intialization of Parse with API Key
-        Parse.initialize(this, "SjQPgPKS1km7nX6jEhTMJ8rRefDKzuS1gK7VQYeK", "twMXyl6pKRL3AyIrHz7vigUNDkp00rEe0ofpv95X");
+/*
+        if(isConnectingToInternet()) {
 
-        //Start Service
-        Intent intent = new Intent(MainActivity.this, UniqueService.class);
-        intent.putExtra("FLAG", 2);
-        startService(intent);
+            //testUnique
+            Unique unique = new Unique("MyUnique", 123, "personal", "Please meet me!", "08912345678", "maxmustermann@test.de", "max", "mmuster", false);
+            unique.setPosition(new LatLng(48.163327, 11.565246));
+            ParseManager parseManager = new ParseManager(getApplicationContext());
 
-        //testUnique
-        Unique unique = new Unique("MyUnique", 123, "personal", "Please meet me!", "08912345678", "maxmustermann@test.de", "max", "mmuster", false);
-        unique.setPosition(new LatLng(48.163327, 11.565246));
-        ParseManager parseManager = new ParseManager(getApplicationContext());
+            try {
+                unique.setServerID(parseManager.uploadUnique(unique));
+            } catch (ParseException pe) {
+                Log.e("Failure", "Error Failed to Upload Unique");
+            }
 
-        try {
-            unique.setServerID(parseManager.uploadUnique(unique));
-        } catch (ParseException pe) {
-            Log.e("Failure", "Error Failed to Upload Unique");
-        }
 
-        /*
-        //parseManager.updateLocation(unique.getServerID(),new LatLng(48.163327, 11.00000));
-        try {
-            ArrayList<Unique> uniques = parseManager.getUniquesByRad(5000, new LatLng(48.163327, 11.565245), unique.getServerID());
-            //System.out.println("how many : " + uniques.size());
-        } catch (ParseException pe) {
+            //parseManager.updateLocation(unique.getServerID(),new LatLng(48.163327, 11.00000));
+            try {
+                ArrayList<Unique> uniques = parseManager.getUniquesByRad(5000, new LatLng(48.163327, 11.565245), unique.getServerID());
+                //System.out.println("how many : " + uniques.size());
+            } catch (ParseException pe) {
 
-        }        */
-        // Test Event
-        Intent newIntent = new Intent(MainActivity.this, UniqueService.class);
-        newIntent.putExtra("FLAG",0);
-        newIntent.putExtra("from","20-06-2015 18:02:00");
-        newIntent.putExtra("till","20-06-2015 18:04:00");
-        newIntent.putExtra("Unique_ServerID",unique.getServerID());
-        startService(newIntent);
+            }
+            // Test Event
+
+            Intent newIntent = new Intent(MainActivity.this, UniqueService.class);
+            newIntent.putExtra("FLAG", 0);
+            newIntent.putExtra("from", "20-06-2015 18:02:00");
+            newIntent.putExtra("till", "20-06-2015 18:04:00");
+            newIntent.putExtra("Unique_ServerID", unique.getServerID());
+            startService(newIntent);       }*/
     }
 
 
@@ -92,5 +97,21 @@ public class MainActivity extends MaterialNavigationDrawer {
     public void onHomeAsUpSelected() {
         // when the back arrow is selected this method is called
         //do nothing
+    }
+
+    public boolean isConnectingToInternet(){
+        ConnectivityManager connectivity = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivity != null)
+        {
+            NetworkInfo[] info = connectivity.getAllNetworkInfo();
+            if (info != null)
+                for (int i = 0; i < info.length; i++)
+                    if (info[i].getState() == NetworkInfo.State.CONNECTED)
+                    {
+                        return true;
+                    }
+
+        }
+        return false;
     }
 }

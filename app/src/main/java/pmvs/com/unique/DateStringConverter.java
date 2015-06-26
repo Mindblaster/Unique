@@ -22,6 +22,34 @@ public class DateStringConverter {
             return "";
         }
     }
+
+
+    public String dateToStringDate(Date date){
+        String dateString;
+        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        try{
+            dateString = dateFormat.format( date );
+            return dateString;
+        }catch (Exception ex ){
+            System.out.println(ex);
+            return "";
+        }
+    }
+    public String dateToStringTime(Date date){
+        String dateString;
+        DateFormat dateFormat = new SimpleDateFormat("HH:mm");
+        try{
+            dateString = dateFormat.format( date );
+            return dateString;
+        }catch (Exception ex ){
+            System.out.println(ex);
+            return "";
+        }
+    }
+
+
+
+
     public Date stringToDate(String inputDate){
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         try {
@@ -32,6 +60,9 @@ public class DateStringConverter {
             return null;
         }
     }
+
+
+
 
 
 }

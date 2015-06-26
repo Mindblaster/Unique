@@ -37,6 +37,7 @@ public class MasterFragment extends android.support.v4.app.Fragment implements V
 
     @Override
     public void onClick(View v) {
-        ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(new ChildFragment(), "Child Title");
+        //((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(new ChildFragment(), "Child Title");
+       ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(new CreateEventFragment(), "Create Event");
     }
 }

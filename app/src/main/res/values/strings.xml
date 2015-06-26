@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Unique</string>
 
-    <string name="hello_world">Hello world!</string>
+    <string name="event_location_name_caption">Location Name</string>
     <string name="action_settings">Settings</string>
 
 <!-- TODO: Remove or change this placeholder text -->
