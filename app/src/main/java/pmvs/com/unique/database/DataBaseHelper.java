@@ -10,6 +10,7 @@ import android.util.Log;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -119,7 +120,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             + ")";
 
 
-    // Tag table create statement
+    // events table create statement
     private static final String CREATE_TABLE_EVENTS = "CREATE TABLE "
             + TABLE_EVENTS +
             "(" + KEY_ID + " INTEGER PRIMARY KEY,"
@@ -542,7 +543,76 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
         return events;
     }
+    //SELECT * FROM EVENTS where fromdate<actualtime;
 
+    /**
+     * getting all events
+     */
+    public List<Event> getAllPastEvents() {
+        List<Event> events = new ArrayList<Event>();
+        String selectQuery = "SELECT  * FROM " + TABLE_EVENTS + " WHERE "
+               + KEY_EVENT_FROMDATE
+               + " < '" +  getDateTime() + "'";
+
+        Log.e(LOG, selectQuery);
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (c.moveToFirst()) {
+            do {
+                Event event = new Event();
+                event.setId(c.getInt((c.getColumnIndex(KEY_ID))));
+                event.setTitle(c.getString(c.getColumnIndex(KEY_EVENT_TITLE)));
+                event.setAddress(c.getString(c.getColumnIndex(KEY_EVENT_ADDRESS)));
+                event.setEventPic(c.getString(c.getColumnIndex(KEY_EVENT_PIC)));
+                event.setFromDate(formatter.parse(c.getString(c.getColumnIndex(KEY_EVENT_FROMDATE)), new ParsePosition(0)));
+                event.setTillDate(formatter.parse(c.getString(c.getColumnIndex(KEY_EVENT_TILLDATE)), new ParsePosition(0)));
+                event.setMyUniqueId(Integer.parseInt(c.getString(c.getColumnIndex(KEY_EVENT_USEDUNIQUEID))));
+                //event.setUniqueShared(c.getString(c.getColumnIndex(KEY_EVENT_USEDUNIQUEID)))
+
+                // adding to events list
+                events.add(event);
+            } while (c.moveToNext());
+        }
+        return events;
+    }
+    //SELECT * FROM EVENTS where fromdate>actualtime;
+
+    /**
+     * getting all events  fromdate>actualtime;
+     */
+    public List<Event> getAllFutureEvents() {
+        List<Event> events = new ArrayList<Event>();
+        String selectQuery = "SELECT  * FROM " + TABLE_EVENTS + " WHERE "
+                + KEY_EVENT_FROMDATE
+                + " > '" +  getDateTime() + "'";
+
+        Log.e(LOG, selectQuery);
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (c.moveToFirst()) {
+            do {
+                Event event = new Event();
+                event.setId(c.getInt((c.getColumnIndex(KEY_ID))));
+                event.setTitle(c.getString(c.getColumnIndex(KEY_EVENT_TITLE)));
+                event.setAddress(c.getString(c.getColumnIndex(KEY_EVENT_ADDRESS)));
+                event.setEventPic(c.getString(c.getColumnIndex(KEY_EVENT_PIC)));
+                event.setFromDate(formatter.parse(c.getString(c.getColumnIndex(KEY_EVENT_FROMDATE)), new ParsePosition(0)));
+                event.setTillDate(formatter.parse(c.getString(c.getColumnIndex(KEY_EVENT_TILLDATE)), new ParsePosition(0)));
+                event.setMyUniqueId(Integer.parseInt(c.getString(c.getColumnIndex(KEY_EVENT_USEDUNIQUEID))));
+                //event.setUniqueShared(c.getString(c.getColumnIndex(KEY_EVENT_USEDUNIQUEID)))
+
+                // adding to events list
+                events.add(event);
+            } while (c.moveToNext());
+        }
+        return events;
+    }
 
     /**
      * getting event count
@@ -616,7 +686,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Creating unique_event
+     * Creating Myunique_event
      */
     public long createMyUniqueEventEntry(long myunique_id, long event_id) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -635,6 +705,15 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         if (db != null && db.isOpen())
             db.close();
+    }
+    /**
+     * get datetime
+     * */
+    private String getDateTime() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+                "dd-MM-yyyy HH:mm:ss", Locale.ENGLISH);
+        Date date = new Date();
+        return dateFormat.format(date);
     }
 
 }

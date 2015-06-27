@@ -81,8 +81,8 @@ public class AllEventsFragment extends android.support.v4.app.Fragment implement
        // }
 
         // Setting the adapter.
-        mFutureAdapter = new RecyclerAdapterForFutureEvents(retrieveEvents());
-        mPastAdapter = new RecyclerAdapterForPastEvents(retrieveEvents());
+        mFutureAdapter = new RecyclerAdapterForFutureEvents(retrieveFutureEvents());
+        mPastAdapter = new RecyclerAdapterForPastEvents(retrievePastEvents());
         dataBaseHelper.closeDB();
 
         mFutureRecyclerView.setAdapter(mFutureAdapter);
@@ -145,6 +145,17 @@ public class AllEventsFragment extends android.support.v4.app.Fragment implement
     public List<Event> retrieveEvents() {
         return dataBaseHelper.getAllEvents();
     }
+
+    public List<Event> retrievePastEvents()
+    {
+        return dataBaseHelper.getAllPastEvents();
+    }
+
+    public List<Event> retrieveFutureEvents()
+    {
+        return dataBaseHelper.getAllFutureEvents();
+    }
+
 
 
     //animating the refresh with swipe and updates the RecyclerView
