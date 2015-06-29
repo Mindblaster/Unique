@@ -628,6 +628,33 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         // return count
         return count;
     }
+    /**
+     * get single Unique
+     */
+    public Event getEvent(long event_id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String selectQuery = "SELECT  * FROM " + TABLE_EVENTS + " WHERE "
+                + KEY_ID + " = " + event_id;
+
+        Log.e(LOG, selectQuery);
+
+        Cursor c = db.rawQuery(selectQuery, null);
+        Event event=new Event();
+
+        if (c.moveToFirst()) {
+
+                event.setId(c.getInt((c.getColumnIndex(KEY_ID))));
+                event.setTitle(c.getString(c.getColumnIndex(KEY_EVENT_TITLE)));
+                event.setAddress(c.getString(c.getColumnIndex(KEY_EVENT_ADDRESS)));
+                event.setEventPic(c.getString(c.getColumnIndex(KEY_EVENT_PIC)));
+                event.setFromDate(formatter.parse(c.getString(c.getColumnIndex(KEY_EVENT_FROMDATE)), new ParsePosition(0)));
+                event.setTillDate(formatter.parse(c.getString(c.getColumnIndex(KEY_EVENT_TILLDATE)), new ParsePosition(0)));
+                event.setMyUniqueId(Integer.parseInt(c.getString(c.getColumnIndex(KEY_EVENT_USEDUNIQUEID))));
+                //event.setUniqueShared(c.getString(c.getColumnIndex(KEY_EVENT_USEDUNIQUEID)))
+            }
+        return event;
+    }
 
     /**
      * Updating a Event

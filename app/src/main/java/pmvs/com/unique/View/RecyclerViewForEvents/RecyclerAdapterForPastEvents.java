@@ -29,7 +29,7 @@ public class RecyclerAdapterForPastEvents  extends RecyclerView.Adapter<Recycler
     public RecyclerViewHolderForPastEvents onCreateViewHolder(ViewGroup viewGroup, int position) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         View eventItem = inflater.inflate(R.layout.event_past_item, viewGroup, false);
-        return new RecyclerViewHolderForPastEvents(eventItem);
+        return new RecyclerViewHolderForPastEvents(eventItem, mData);
     }
 
     @Override
