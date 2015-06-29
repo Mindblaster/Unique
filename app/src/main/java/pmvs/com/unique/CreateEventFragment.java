@@ -154,11 +154,21 @@ public class CreateEventFragment extends DialogFragment {
                 endDate.setText(sdf.format(myCalendar.getTime()));
                 break;
             case START_TIME:
-                startDate.setText(hours + ":" + minutes);
+                if(minutes==0){
+                    startTime.setText(hours + ":" + minutes + minutes);
+                }
+                else{
+                    startTime.setText(hours + ":" + minutes);
+                }
                 break;
 
             case END_TIME:
-                startDate.setText(hours + ":" + minutes);
+                if(minutes==0){
+                    endTime.setText(hours + ":" + minutes + minutes);
+                }
+                else{
+                    endTime.setText(hours + ":" + minutes);
+                }
                 break;
             default:
                 break;

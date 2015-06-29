@@ -29,9 +29,9 @@
                 android:id="@+id/event_title"
                 android:textSize="30sp"
                 android:layout_alignBottom="@id/photo"
-                android:textColor="#000000"
+                android:layout_centerInParent="true"
                 android:singleLine="true"
-                android:text="Type in Event Name"
+                android:hint="Event Name"
                 android:imeOptions="actionDone"
                 />
 
@@ -43,7 +43,6 @@
                 android:layout_below="@id/event_title"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="5dp"
-                android:textColor="#000000"
                 android:hint="@string/event_location_name_caption"
                 android:imeOptions="actionDone"/>
 
@@ -67,7 +66,6 @@
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:id="@+id/event_starting_date"
-                android:hint="Starting Date"
                 android:layout_below="@+id/event_starting_date_caption"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="5dp"
@@ -105,7 +103,6 @@
                 android:layout_width="@dimen/date_width"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
-                android:hint="Ending Date"
                 android:layout_below="@id/event_ending_date_caption"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="5dp"
@@ -123,11 +120,63 @@
                 android:focusable="false"
                 />
             <View
+                android:id="@+id/separator"
                 android:layout_below="@id/photo"
                 android:layout_toRightOf="@id/event_starting_time"
                 android:layout_width="1dp"
-                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_height="200dp"
                 android:background="@color/LightGrey" />
+
+            <TextView
+                android:id="@+id/myUnique_caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/separator"
+                android:layout_below="@id/event_title"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:text="My Unique"/>
+
+            <Switch
+                android:id="@+id/unique_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/myUnique_caption"
+                android:layout_toRightOf="@id/separator"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                />
+            <ToggleButton
+                android:layout_below="@id/unique_switch"
+                android:layout_toRightOf="@id/separator"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+            <Button
+                android:id="@+id/ok_button"
+                android:layout_below="@+id/separator"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_alignParentLeft="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="20dp"
+                android:text= "Create Event" />
+
+            <Button
+                android:layout_below="@+id/separator"
+                android:layout_toRightOf="@+id/ok_button"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:text="Cancel" />
+
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>

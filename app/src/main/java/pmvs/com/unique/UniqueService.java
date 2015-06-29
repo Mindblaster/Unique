@@ -130,7 +130,6 @@ public class UniqueService extends Service{
                     System.out.println("Task finished!");
                     locationManager.removeUpdates(locationListener);
                 }
-
             }
 
 
