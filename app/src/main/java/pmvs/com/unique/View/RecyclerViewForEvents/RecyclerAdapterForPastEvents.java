@@ -38,7 +38,6 @@ public class RecyclerAdapterForPastEvents  extends RecyclerView.Adapter<Recycler
         viewHolder.title.setText(eventForRecyclerView.getTitle());
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
         viewHolder.address.setText(dateFormat.format(eventForRecyclerView.getTillDate()));
-        viewHolder.icon.setBackgroundColor(Color.parseColor("#cccccc"));
         viewHolder.amount.setText("32");
         // viewHolder.icon.setBackgroundColor(Color.parseColor(mData.get(position).color));
     }

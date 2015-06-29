@@ -16,17 +16,12 @@
         android:paddingLeft="20dp"
         />
 
-
-
-
     <ImageButton
         android:id="@+id/addItem2"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_gravity="bottom|right"
-        android:tint="@android:color/white"
         android:background="@drawable/iclauncher"
-        android:src="@android:drawable/ic_input_add"
         android:layout_marginEnd="5dp"
         android:layout_alignParentBottom="true"
         android:layout_alignEnd="@+id/swipe_refresh_layout"
@@ -34,15 +29,13 @@
         android:layout_marginRight="20dp"
 
         android:clickable="true"
-        android:elevation="@dimen/activity_horizontal_margin" />
+        android:elevation="20dp" />
 
     <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_below="@+id/textFutureEvents"
-
-        >
+        android:layout_below="@+id/textFutureEvents">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/futurerecycler"
@@ -58,7 +51,7 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="@string/pastEventsForRecView"
         android:id="@+id/textPastEvents"
-        android:layout_above="@+id/pastrecycler"
+        android:layout_below="@+id/divider"
         android:paddingLeft="20dp"
 
         />
@@ -70,21 +63,13 @@
         android:layout_height="2dp"
         android:background="#cccccc"
         android:layout_below="@+id/swipe_refresh_layout"
-
-
-
    />
-
-
-
 
     <android.support.v7.widget.RecyclerView
             android:id="@+id/pastrecycler"
-
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignEnd="@+id/swipe_refresh_layout"
+            android:layout_height="250dp"
+            android:layout_below="@+id/textPastEvents"
             android:scrollbars="vertical"/>
 
 

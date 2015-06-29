@@ -35,12 +35,15 @@ public class MainActivity extends MaterialNavigationDrawer {
     public void init(Bundle savedInstanceState) {
         this.setDrawerHeaderImage(R.drawable.appnavbarpic);
 
-          this.addSection(this.newSection("UniqueBook", new MasterFragment()));
-//        this.addSection(this.newSection("MyUniques", new MasterFragment()));
-          this.addSection(this.newSection("newEventList", new AllEventsFragment()));
-          this.addSection(this.newSection("Eventlist", new EventListFragment()));
 
-          Parse.initialize(this, "SjQPgPKS1km7nX6jEhTMJ8rRefDKzuS1gK7VQYeK", "twMXyl6pKRL3AyIrHz7vigUNDkp00rEe0ofpv95X");
+//        this.addSection(this.newSection("MyUniques", new MasterFragment()));
+          this.addSection(this.newSection("Events", R.drawable.eventnavicon, new AllEventsFragment()));
+          this.addSection(this.newSection("UniqueBook",R.drawable.uniquebookicon, new MasterFragment()));
+          this.addSection(this.newSection("My Uniques", R.drawable.uniquecardsicon, new EventListFragment()));
+          this.addBottomSection(newSection("Bottom Section",R.drawable.ic_settings_black_24dp, new MasterFragment()));
+
+
+        Parse.initialize(this, "SjQPgPKS1km7nX6jEhTMJ8rRefDKzuS1gK7VQYeK", "twMXyl6pKRL3AyIrHz7vigUNDkp00rEe0ofpv95X");
             //Start Service
             Intent intent = new Intent(MainActivity.this, UniqueService.class);
             intent.putExtra("FLAG", 2);

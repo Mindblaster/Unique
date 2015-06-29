@@ -95,8 +95,8 @@ public class AllEventsFragment extends android.support.v4.app.Fragment implement
         addButton.setOutlineProvider(new ViewOutlineProvider() {
             @Override
             public void getOutline(View view, Outline outline) {
-                int diameter = getResources().getDimensionPixelSize(R.dimen.add_button_radius);
-                outline.setOval(0, 0, diameter, diameter);
+               // int diameter = getResources().getDimensionPixelSize(R.dimen.add_button_radius);
+                outline.setOval(5, 5, 85, 85);
             }
         });
 
