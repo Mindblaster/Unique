@@ -11,9 +11,12 @@ import android.view.ViewGroup;
 import pmvs.com.unique.R;
 import pmvs.com.unique.database.DataBaseHelper;
 import pmvs.com.unique.model.Event;
+import pmvs.com.unique.model.Unique;
 
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.google.android.gms.maps.model.LatLng;
 
 import org.w3c.dom.Text;
 
@@ -51,6 +54,23 @@ public class DetailsViewOfEventChildFragment extends android.support.v4.app.Frag
         dateOfEvent = (TextView)detailsView.findViewById(R.id.date_of_detailedevent);
         titelOfUnique = (TextView)detailsView.findViewById(R.id.left_text_button2);
         dataBaseHelper = new DataBaseHelper(getActivity());
+        Unique fortestDB =new Unique();
+        fortestDB.setName("TestName");
+        fortestDB.seteMail("test@mail.de");
+        fortestDB.setTag("1");
+        fortestDB.setText("langer Textblablablabla");
+        fortestDB.setFacebookName("testfbname");
+        fortestDB.setPhoneNumber("000000222222");
+        fortestDB.setServerID("123");
+        fortestDB.setTwitterName("twitttestname");
+        LatLng bla=new LatLng(Double.parseDouble("12.34"),Double.parseDouble("44.44"));
+        fortestDB.setPosition((bla));
+        dataBaseHelper.createUniqueEntry(fortestDB, idOfEvent);
+
+        System.out.println(dataBaseHelper.isUniqueInDB("123"));
+
+
+
         event= dataBaseHelper.getEvent(idOfEvent);
         dataBaseHelper.closeDB();
 

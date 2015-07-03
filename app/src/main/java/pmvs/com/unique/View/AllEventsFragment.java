@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 import pmvs.com.unique.ChildFragment;
@@ -76,7 +77,7 @@ public class AllEventsFragment extends android.support.v4.app.Fragment implement
 
         dataBaseHelper = new DataBaseHelper(getActivity());
     ///    try {
-     //       createList(6);
+     //       createList(1);
        ///    } catch (ParseException e) {
             // ignore this
        // }

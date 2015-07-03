@@ -3,7 +3,7 @@
 
     <string name="event_location_name_caption">Location Name</string>
     <string name="action_settings">Settings</string>
-    <string name="futureTextForRecView">Comming Events</string>
+    <string name="futureTextForRecView">Coming Events</string>
     <string name="pastEventsForRecView">Past Events</string>
 
 <!-- TODO: Remove or change this placeholder text -->
