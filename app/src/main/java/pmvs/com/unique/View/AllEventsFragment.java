@@ -20,6 +20,7 @@ import java.util.List;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 import pmvs.com.unique.ChildFragment;
+import pmvs.com.unique.CreateEventFragment;
 import pmvs.com.unique.R;
 import pmvs.com.unique.View.RecyclerViewForEvents.RecyclerAdapterForFutureEvents;
 import pmvs.com.unique.View.RecyclerViewForEvents.RecyclerAdapterForPastEvents;
@@ -110,8 +111,7 @@ public class AllEventsFragment extends android.support.v4.app.Fragment implement
 
             //new child
             case R.id.addItem2:
-                ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(new ChildFragment(), "one subwindow is open");
-
+                ((MaterialNavigationDrawer) this.getActivity()).setFragmentChild(new CreateEventFragment(), "Create New Event");
                 break;
         }
     }

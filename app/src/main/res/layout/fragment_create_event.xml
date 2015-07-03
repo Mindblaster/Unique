@@ -157,7 +157,7 @@
 
 
             <Button
-                android:id="@+id/ok_button"
+                android:id="@+id/create_button"
                 android:layout_below="@+id/separator"
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_alignParentLeft="true"
@@ -168,8 +168,9 @@
                 android:text= "Create Event" />
 
             <Button
+                android:id="@+id/cancel_button"
                 android:layout_below="@+id/separator"
-                android:layout_toRightOf="@+id/ok_button"
+                android:layout_toRightOf="@+id/create_button"
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

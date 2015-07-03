@@ -121,10 +121,16 @@ public class UniqueService extends Service{
 
             LocationListener locationListener = new UniqueLocationlistener(getApplicationContext(),uniqueServerID);
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10,locationListener, Looper.getMainLooper());
-
+            long sleepinterval=execTimeInMs/100;
 
             while (!toFinish)
             {
+                try {
+                    Thread.sleep(sleepinterval);
+                }
+                catch(Exception e){
+                    System.out.println("sleeping failed");
+                }
                 if(System.nanoTime()-startingTimeInNS>=execTimeInNS){
                     toFinish=true;
                     System.out.println("Task finished!");

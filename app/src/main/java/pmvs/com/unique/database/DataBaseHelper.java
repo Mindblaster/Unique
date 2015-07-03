@@ -82,7 +82,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private static final String KEY_UNIQUES_ID = "unique_id";
     private static final String KEY_EVENTS_ID = "event_id";
     private static final SimpleDateFormat formatter = new SimpleDateFormat(
-            "dd-MM-yyyy HH:mm:ss", Locale.ENGLISH);
+            "dd.MM.yyyy HH:mm", Locale.ENGLISH);
 
     // myUNIQUE_EVENTS Table - column names
     private static final String KEY_MYUNIQUES_ID = "myunique_id";

@@ -22,7 +22,9 @@ import java.util.ArrayList;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 import pmvs.com.unique.View.AllEventsFragment;
-import pmvs.com.unique.model.Unique;
+import pmvs.com.unique.database.DataBaseHelper;
+import pmvs.com.unique.model.*;
+import pmvs.com.unique.model.Event;
 
 /**
  * Created by inot on 25.05.15.
@@ -43,6 +45,8 @@ public class MainActivity extends MaterialNavigationDrawer {
           this.addBottomSection(newSection("Bottom Section",R.drawable.ic_settings_black_24dp, new MasterFragment()));
 
 
+
+
         Parse.initialize(this, "SjQPgPKS1km7nX6jEhTMJ8rRefDKzuS1gK7VQYeK", "twMXyl6pKRL3AyIrHz7vigUNDkp00rEe0ofpv95X");
             //Start Service
             Intent intent = new Intent(MainActivity.this, UniqueService.class);
@@ -50,7 +54,6 @@ public class MainActivity extends MaterialNavigationDrawer {
             startService(intent);
 
         //Intialization of Parse with API Key
-/*
         if(isConnectingToInternet()) {
 
             //testUnique
@@ -76,10 +79,10 @@ public class MainActivity extends MaterialNavigationDrawer {
 
             Intent newIntent = new Intent(MainActivity.this, UniqueService.class);
             newIntent.putExtra("FLAG", 0);
-            newIntent.putExtra("from", "20-06-2015 18:02:00");
-            newIntent.putExtra("till", "20-06-2015 18:04:00");
+            newIntent.putExtra("from", "20.06.2015 18:02");
+            newIntent.putExtra("till", "20.06.2015 18:04");
             newIntent.putExtra("Unique_ServerID", unique.getServerID());
-            startService(newIntent);       }*/
+            startService(newIntent);       }
     }
 
 

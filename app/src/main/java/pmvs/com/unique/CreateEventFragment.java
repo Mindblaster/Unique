@@ -3,22 +3,36 @@ package pmvs.com.unique;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.parse.ParseException;
+
 import java.sql.Time;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+
+import pmvs.com.unique.database.DataBaseHelper;
+import pmvs.com.unique.model.*;
+import pmvs.com.unique.model.Event;
 
 
 /**
@@ -43,6 +57,18 @@ public class CreateEventFragment extends DialogFragment {
     private DatePickerDialog.OnDateSetListener date;
     private TimePickerDialog.OnTimeSetListener time;
     private DateStringConverter dateStringConverter;
+    private Button createButton;
+    private Button cancelButton;
+    private EditText eventTitle;
+    private EditText eventLocation;
+
+    private Date startingDate;
+    private Date endingDate;
+
+    private pmvs.com.unique.model.Event event;
+    private DataBaseHelper dataBaseHelper;
+    private ParseManager parseManager;
+
 
 
     public CreateEventFragment() {
@@ -59,6 +85,13 @@ public class CreateEventFragment extends DialogFragment {
         endDate = (EditText)view.findViewById(R.id.event_ending_date);
         startTime =(EditText) view.findViewById(R.id.event_starting_time);
         endTime =(EditText) view.findViewById(R.id.event_ending_time);
+        createButton=(Button)view.findViewById(R.id.create_button);
+        cancelButton=(Button)view.findViewById(R.id.cancel_button);
+
+        eventTitle=(EditText)view.findViewById(R.id.event_title);
+        eventLocation=(EditText)view.findViewById(R.id.event_location_name);
+
+        dataBaseHelper= new DataBaseHelper(getActivity());
 
         dateStringConverter =new DateStringConverter();
         startDate.setText(dateStringConverter.dateToStringDate(new Date()));
@@ -66,6 +99,8 @@ public class CreateEventFragment extends DialogFragment {
 
         startTime.setText(dateStringConverter.dateToStringTime(new Date()));
         endTime.setText(dateStringConverter.dateToStringTime(new Date()));
+
+        parseManager = new ParseManager(getActivity());
 
         setListeners();
         return view;
@@ -98,12 +133,12 @@ public class CreateEventFragment extends DialogFragment {
         };
 
 
-        //Listners for Start and End Date
+        //Listeners for Start and End Date
 
         startDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialogCaller=START_DATE;
+                dialogCaller = START_DATE;
                 new DatePickerDialog(getActivity(), date, myCalendar
                         .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                         myCalendar.get(Calendar.DAY_OF_MONTH)).show();
@@ -113,7 +148,7 @@ public class CreateEventFragment extends DialogFragment {
         endDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialogCaller=END_DATE;
+                dialogCaller = END_DATE;
                 new DatePickerDialog(getActivity(), date, myCalendar
                         .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                         myCalendar.get(Calendar.DAY_OF_MONTH)).show();
@@ -123,20 +158,58 @@ public class CreateEventFragment extends DialogFragment {
         startTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialogCaller=START_TIME;
-                new TimePickerDialog(getActivity(),time,hours,minutes,true).show();
+                dialogCaller = START_TIME;
+                new TimePickerDialog(getActivity(), time, hours, minutes, true).show();
             }
         });
 
         endTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialogCaller=END_TIME;
-                new TimePickerDialog(getActivity(),time,hours,minutes,true).show();
+                dialogCaller = END_TIME;
+                new TimePickerDialog(getActivity(), time, hours, minutes, true).show();
             }
         });
 
+        //Listeners for buttons
+        createButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!checkifEmpty()){
+                    if (!checkDates()) {
+                        //TODO: Check Unique
+// public Event(int initId, String initTitle, Date initFrom, Date initTill, String initAddress, int initMyUniqueID, boolean initUniqueShared, List<Unique> initReceivedUniques, String initEventPic) {
+                        List<Unique> listUnique = new ArrayList<>();
+                        event= new Event(0, eventTitle.getText().toString(),startingDate,endingDate,eventLocation.getText().toString(),0,false,listUnique,"kkk.jpg");
 
+
+                        ////testUnique
+                        Unique unique = new Unique("MyUnique", 123, "personal", "Please meet me!", "08912345678", "maxmustermann@test.de", "max", "mmuster", false);
+                        unique.setPosition(new LatLng(48.163327, 11.565246));
+
+                        try {
+                            unique.setServerID(parseManager.uploadUnique(unique));
+                        } catch (ParseException pe) {
+                            Log.e("Failure", "Error Failed to Upload Unique");
+                        }
+
+
+                        //TODO: set serverID in Local Database
+
+                        dataBaseHelper.createEventEntry(event);
+                        dataBaseHelper.closeDB();
+
+                        Intent newIntent = new Intent(getActivity(), UniqueService.class);
+                        newIntent.putExtra("FLAG", 0);
+                        newIntent.putExtra("from", dateStringConverter.dateToString(startingDate));
+                        newIntent.putExtra("till", dateStringConverter.dateToString(endingDate));
+                        newIntent.putExtra("Unique_ServerID", unique.getServerID());
+                        getActivity().startService(newIntent);
+
+                    }
+                }
+            }
+        });
 
 
     }
@@ -175,6 +248,68 @@ public class CreateEventFragment extends DialogFragment {
         }
         dialogCaller=5;
 
+    }
+
+    private boolean checkifEmpty(){
+
+        if(eventTitle.getText().toString().equals("")){
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage("Please set an Event Title! ")
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                        }
+                    }).create().show();
+            return (true);
+        }
+        else if(eventLocation.getText().toString().equals("")){
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage("Please set Event Location")
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+
+                        }
+                    }).create().show();
+            return (true);
+        }
+        return (false);
+    }
+
+    private boolean checkDates(){
+        // get values from editTexts and create Date objects
+        String startingDateString = startDate.getText().toString() + " " + startTime.getText().toString();
+        startingDate = dateStringConverter.stringToDate(startingDateString);
+
+        String endingDateString = endDate.getText().toString() + " " + endTime.getText().toString();
+        endingDate = dateStringConverter.stringToDate(endingDateString);
+
+        //Check if starting date is at least 5 mins in future
+        Date currentDateTime = new Date();
+        //1) check if starting date is today or in the future
+        System.out.println(currentDateTime.compareTo(startingDate));
+        if ( startingDate.getTime()- System.currentTimeMillis() < 300000) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage("Please set a Starting Date and Time at least 5 Minutes from now")
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+
+                            }
+                        }).create().show();
+                return (true);
+        }
+        //2.)check if endingDate is after startingDate
+        else if(endingDate.getTime() - startingDate.getTime()<=0) {
+            if (startingDate.getTime() - System.currentTimeMillis() < 300000) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage("Please set an Ending Date and Time after the starting Time")
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                            }
+                        }).create().show();
+                return (true);
+            }
+        }
+        return false;
     }
 
 

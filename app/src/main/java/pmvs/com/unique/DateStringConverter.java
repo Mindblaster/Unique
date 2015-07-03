@@ -13,7 +13,7 @@ public class DateStringConverter {
 
     public String dateToString(Date date){
         String dateString;
-        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
         try{
             dateString = dateFormat.format( date );
             return dateString;
@@ -48,10 +48,8 @@ public class DateStringConverter {
     }
 
 
-
-
     public Date stringToDate(String inputDate){
-        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
         try {
             Date date = dateFormat.parse(inputDate);
             return date;
@@ -62,7 +60,27 @@ public class DateStringConverter {
     }
 
 
+    public Date stringToDateDate(String inputDate){
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        try {
+            Date date = dateFormat.parse(inputDate);
+            return date;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
+    public Date stringToDateTime(String inputDate){
+        DateFormat dateFormat = new SimpleDateFormat("HH:mm");
+        try {
+            Date date = dateFormat.parse(inputDate);
+            return date;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
 
 }

@@ -45,7 +45,6 @@ public class Event {
         this.fromDate = initFrom;
         this.tillDate = initTill;
         this.countAllReceivedUniques = initCountAllReceivedUniques;
-
     }
 
     public int getId() {
