@@ -4,8 +4,11 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Message;
@@ -13,11 +16,14 @@ import android.os.Messenger;
 import android.os.RemoteException;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.parse.Parse;
 import com.parse.ParseException;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
@@ -30,8 +36,9 @@ import pmvs.com.unique.model.Event;
  * Created by inot on 25.05.15.
  */
 
-public class MainActivity extends MaterialNavigationDrawer {
-
+public class MainActivity extends MaterialNavigationDrawer implements CreateEventFragment.CreateFragmentImageInterface {
+    private final int SELECT_PHOTO = 1;
+    private ImageView imageView;
 
     @Override
     public void init(Bundle savedInstanceState) {
@@ -53,36 +60,11 @@ public class MainActivity extends MaterialNavigationDrawer {
             intent.putExtra("FLAG", 2);
             startService(intent);
 
-        //Intialization of Parse with API Key
+        //Check if internet Connection is available
         if(isConnectingToInternet()) {
 
-            //testUnique
-            Unique unique = new Unique("MyUnique", 123, "personal", "Please meet me!", "08912345678", "maxmustermann@test.de", "max", "mmuster", false);
-            unique.setPosition(new LatLng(48.163327, 11.565246));
-            ParseManager parseManager = new ParseManager(getApplicationContext());
 
-            try {
-                unique.setServerID(parseManager.uploadUnique(unique));
-            } catch (ParseException pe) {
-                Log.e("Failure", "Error Failed to Upload Unique");
-            }
-
-
-            //parseManager.updateLocation(unique.getServerID(),new LatLng(48.163327, 11.00000));
-            try {
-                ArrayList<Unique> uniques = parseManager.getUniquesByRad(5000, new LatLng(48.163327, 11.565245), unique.getServerID());
-                //System.out.println("how many : " + uniques.size());
-            } catch (ParseException pe) {
-
-            }
-            // Test Event
-
-            Intent newIntent = new Intent(MainActivity.this, UniqueService.class);
-            newIntent.putExtra("FLAG", 0);
-            newIntent.putExtra("from", "20.06.2015 18:02");
-            newIntent.putExtra("till", "20.06.2015 18:04");
-            newIntent.putExtra("Unique_ServerID", unique.getServerID());
-            startService(newIntent);       }
+        }
     }
 
 
@@ -119,5 +101,34 @@ public class MainActivity extends MaterialNavigationDrawer {
 
         }
         return false;
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
+        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+        switch(requestCode) {
+            case SELECT_PHOTO:
+                if(resultCode == RESULT_OK){
+                    try {
+                        final Uri imageUri = imageReturnedIntent.getData();
+                        final InputStream imageStream = getContentResolver().openInputStream(imageUri);
+                        final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                        imageView.setImageBitmap(selectedImage);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+        }
+    }
+
+
+    @Override
+    public void setImage(ImageView imageView) {
+        this.imageView=imageView;
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        photoPickerIntent.setType("image/*");
+        startActivityForResult(photoPickerIntent, SELECT_PHOTO);
     }
 }

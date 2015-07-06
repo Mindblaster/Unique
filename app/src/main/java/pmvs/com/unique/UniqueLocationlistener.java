@@ -10,6 +10,7 @@ import com.parse.ParseException;
 
 import java.util.ArrayList;
 
+import pmvs.com.unique.database.DataBaseHelper;
 import pmvs.com.unique.model.Unique;
 
 /**
@@ -20,12 +21,16 @@ public class UniqueLocationlistener implements LocationListener {
     private String uniqueServerID;
     private Context context;
     private ArrayList<Unique> uniques;
+    private long localEventID;
+    DataBaseHelper dataBaseHelper;
 
 
-    public UniqueLocationlistener(Context context,String uniqueServerID){
+    public UniqueLocationlistener(Context context,String uniqueServerID,long localEventID){
         this.context=context;
         this.parseManager=new ParseManager(context);
         this.uniqueServerID=uniqueServerID;
+        this.localEventID=localEventID;
+        dataBaseHelper= new DataBaseHelper(context);
     }
     @Override
     public void onLocationChanged(Location location) {
@@ -42,7 +47,14 @@ public class UniqueLocationlistener implements LocationListener {
             System.out.println("Donwloading Uniques failed");
         }
 
-        //write uniques in Database
+        for(int i=0;i<uniques.size();i++){
+            //If unique is not in Database
+            if(!dataBaseHelper.isUniqueInDB(uniques.get(i).getServerID())) {
+                dataBaseHelper.createUniqueEntry(uniques.get(i), localEventID);
+            }
+        }
+        dataBaseHelper.closeDB();
+
 
     }
 

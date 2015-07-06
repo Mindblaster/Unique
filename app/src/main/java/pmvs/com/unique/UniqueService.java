@@ -56,7 +56,7 @@ public class UniqueService extends Service{
         dateStringConverter= new DateStringConverter();
         switch(intent.getIntExtra("FLAG",3)) {
             case (NEW_EVENT):
-                ScheduledEvent scheduledEvent = new ScheduledEvent(dateStringConverter.stringToDate(intent.getStringExtra("from")),dateStringConverter.stringToDate(intent.getStringExtra("till")),intent.getStringExtra("Unique_ServerID"));
+                ScheduledEvent scheduledEvent = new ScheduledEvent(dateStringConverter.stringToDate(intent.getStringExtra("from")),dateStringConverter.stringToDate(intent.getStringExtra("till")),intent.getStringExtra("Unique_ServerID"),intent.getLongExtra("Local_EventID",0));
                 scheduledEvents.add(scheduledEvent);
 
                 //StartEventTime
@@ -64,7 +64,7 @@ public class UniqueService extends Service{
                 long toStartDiffInSec = TimeUnit.MILLISECONDS.toSeconds(toStartDiffInMs);
 
                 System.out.println("startTime: "+ toStartDiffInSec);
-                MyTimerTask myTimerTask = new MyTimerTask(scheduledEvent.getUniqueServerID(),scheduledEvent.getFrom(),scheduledEvent.getTill());
+                MyTimerTask myTimerTask = new MyTimerTask(scheduledEvent.getUniqueServerID(),scheduledEvent.getFrom(),scheduledEvent.getTill(),scheduledEvent.getLocal_eventID());
 
                 //If Event Start is in the Past Task is not Scheduled (Should either be caught by the UI or we can set the task to Start immediately
                 if(toStartDiffInSec>0) {
@@ -94,15 +94,15 @@ public class UniqueService extends Service{
 
     private class MyTimerTask extends TimerTask {
         private String uniqueServerID;
-        ParseManager parseManager;
+        private long localEventID;
         private Date startingDate;
         private Date endingDate;
 
-        public MyTimerTask(String uniqueServerID,Date startingDate,Date endingDate){
+        public MyTimerTask(String uniqueServerID,Date startingDate,Date endingDate,long localEventID){
             this.uniqueServerID=uniqueServerID;
-            parseManager=new ParseManager(getApplicationContext());
             this.startingDate=startingDate;
             this.endingDate=endingDate;
+            this.localEventID=localEventID;
         }
 
         @Override
@@ -119,7 +119,7 @@ public class UniqueService extends Service{
             LocationManager locationManager = (LocationManager)
                     getSystemService(Context.LOCATION_SERVICE);
 
-            LocationListener locationListener = new UniqueLocationlistener(getApplicationContext(),uniqueServerID);
+            LocationListener locationListener = new UniqueLocationlistener(getApplicationContext(),uniqueServerID,localEventID);
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10,locationListener, Looper.getMainLooper());
             long sleepinterval=execTimeInMs/100;
 

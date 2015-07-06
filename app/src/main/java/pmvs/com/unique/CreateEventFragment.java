@@ -1,6 +1,7 @@
 package pmvs.com.unique;
 
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
@@ -17,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TimePicker;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -30,6 +32,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 import pmvs.com.unique.database.DataBaseHelper;
 import pmvs.com.unique.model.*;
 import pmvs.com.unique.model.Event;
@@ -61,6 +64,7 @@ public class CreateEventFragment extends DialogFragment {
     private Button cancelButton;
     private EditText eventTitle;
     private EditText eventLocation;
+    private ImageView imageView;
 
     private Date startingDate;
     private Date endingDate;
@@ -68,6 +72,7 @@ public class CreateEventFragment extends DialogFragment {
     private pmvs.com.unique.model.Event event;
     private DataBaseHelper dataBaseHelper;
     private ParseManager parseManager;
+    private CreateFragmentImageInterface createFragmentImageInterface;
 
 
 
@@ -87,6 +92,8 @@ public class CreateEventFragment extends DialogFragment {
         endTime =(EditText) view.findViewById(R.id.event_ending_time);
         createButton=(Button)view.findViewById(R.id.create_button);
         cancelButton=(Button)view.findViewById(R.id.cancel_button);
+
+        imageView=(ImageView) view.findViewById(R.id.photo);
 
         eventTitle=(EditText)view.findViewById(R.id.event_title);
         eventLocation=(EditText)view.findViewById(R.id.event_location_name);
@@ -195,8 +202,7 @@ public class CreateEventFragment extends DialogFragment {
 
 
                         //TODO: set serverID in Local Database
-
-                        dataBaseHelper.createEventEntry(event);
+                        long localEventID=dataBaseHelper.createEventEntry(event);
                         dataBaseHelper.closeDB();
 
                         Intent newIntent = new Intent(getActivity(), UniqueService.class);
@@ -204,10 +210,34 @@ public class CreateEventFragment extends DialogFragment {
                         newIntent.putExtra("from", dateStringConverter.dateToString(startingDate));
                         newIntent.putExtra("till", dateStringConverter.dateToString(endingDate));
                         newIntent.putExtra("Unique_ServerID", unique.getServerID());
+                        newIntent.putExtra("Local_EventID", localEventID);
                         getActivity().startService(newIntent);
+                        getActivity().getSupportFragmentManager().popBackStack();
+
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        builder.setMessage("Event was Created")
+                                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        getActivity().onBackPressed();
+                                    }
+                                }).create().show();
 
                     }
                 }
+            }
+        });
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createFragmentImageInterface.setImage(imageView);
             }
         });
 
@@ -311,6 +341,19 @@ public class CreateEventFragment extends DialogFragment {
         }
         return false;
     }
+    @Override
+         public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            createFragmentImageInterface = (CreateFragmentImageInterface) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must createfragmentinterface");
+        }
+    }
 
+
+    public interface CreateFragmentImageInterface{
+        public void setImage(ImageView imageView);
+    }
 
 }
