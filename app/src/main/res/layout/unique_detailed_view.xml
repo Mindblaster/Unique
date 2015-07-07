@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="270dp"
+        android:background="@drawable/backforun">
+
+
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/photo_of_unique"
+
+            android:layout_width="200sp"
+            android:layout_height="200sp"
+            android:layout_alignParentTop="true"
+
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="0sp"
+            android:layout_marginRight="0sp"
+            android:layout_marginTop="12sp"
+            android:paddingTop="16dp"
+            android:scaleType="centerCrop"
+
+            android:src="@drawable/pilot"
+            app:border_color="#FF000000"
+            app:border_width="1dp" />
+
+        <TextView
+            android:id="@+id/name_detailedview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/photo_of_unique"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:shadowColor="#000000"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="2"
+            android:singleLine="true"
+            android:textColor="#FFFFFF"
+            android:textSize="30sp"
+            android:autoText="false"
+            android:clickable="false"
+            android:enabled="true" />
+
+        <ToggleButton
+            android:id="@+id/toggle_fav_unique"
+            android:layout_width="58dp"
+            android:layout_height="60dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="20sp"
+            android:layout_marginTop="20sp"
+            android:background="@drawable/favbutton_grey"
+            android:checked="false"
+            android:paddingRight="10dp"
+            android:textOff="@string/nothing"
+            android:textOn="@string/nothing" />
+
+    </RelativeLayout>
+
+
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/detailedViewOfUnique"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="#D3D3D3"
+        card_view:cardCornerRadius="2dp"
+        card_view:cardElevation="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#EFEBE9"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:background="#EFEBE9"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/facebook_icon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:paddingTop="5dp"
+                    android:src="@drawable/fb_grey" />
+
+                <TextView
+                    android:id="@+id/fb_of_detailedunique"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textColor="#ff424242"
+                    android:textSize="16sp" />
+            </LinearLayout>
+            <!--
+                            <View
+                                android:id="@+id/cardDivider_for_unique"
+                                android:layout_width="fill_parent"
+                                android:layout_height="2px"
+                                android:background="#D4D4D4"
+                                android:visibility="visible" />
+                           -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:background="#EFEBE9"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/twitter_icon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:paddingTop="5dp"
+                    android:src="@drawable/twittergrey" />
+
+                <TextView
+                    android:id="@+id/twitter_of_detailedunique"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textColor="#ff424242"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:background="#EFEBE9"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/phone_icon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:paddingTop="5dp"
+                    android:src="@drawable/handy_grey" />
+
+
+                <TextView
+                    android:id="@+id/phone_of_detailedunique"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textColor="#ff424242"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/cardDivider_for_unique_3"
+                android:layout_width="fill_parent"
+                android:layout_height="2px"
+                android:background="#D4D4D4"
+                android:visibility="visible" />
+
+
+            <TextView
+                android:id="@+id/text_of_detailedunique"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="16dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="16dp"
+                android:textColor="#878787"
+                android:textSize="16sp"
+                android:textStyle="italic" />
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+
+</LinearLayout>

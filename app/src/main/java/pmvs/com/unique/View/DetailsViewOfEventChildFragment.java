@@ -3,12 +3,17 @@ package pmvs.com.unique.View;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import pmvs.com.unique.R;
+import pmvs.com.unique.View.RecyclerViewForUniques.RecyclerViewAdapterForAllUniques;
+import pmvs.com.unique.View.RecyclerViewForUniques.RecyclerViewForUniquesBelowEvent.RecyclerViewAdapterForUniquesOfEvent;
 import pmvs.com.unique.database.DataBaseHelper;
 import pmvs.com.unique.model.Event;
 import pmvs.com.unique.model.Unique;
@@ -21,7 +26,9 @@ import com.google.android.gms.maps.model.LatLng;
 import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -29,7 +36,7 @@ import java.util.Date;
  */
 
 
-public class DetailsViewOfEventChildFragment extends android.support.v4.app.Fragment {
+public class DetailsViewOfEventChildFragment extends android.support.v4.app.Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private TextView titel;
     private TextView adress;
@@ -40,13 +47,23 @@ public class DetailsViewOfEventChildFragment extends android.support.v4.app.Frag
     private Date fromDateOfEvent;
     private Date tillDateOfEvent;
 
+    private RecyclerView uniquesForEventRecView;
+
+    private RecyclerViewAdapterForUniquesOfEvent mAllUniquesAdapter;
+
+    private RecyclerView.LayoutManager mAllUniquesLayoutManager;
+    private SwipeRefreshLayout swipeRefreshLayout;
+
+    private List<Unique> uniques = new ArrayList<>();
+    private long idOfEvent;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
       //  Log.d("MaterialNavigationDrawer Master-Child", "Child created");
         Bundle extras = this.getArguments();
         int tmp = extras.getInt(Intent.EXTRA_TEXT);
-        long idOfEvent= Long.valueOf(tmp).longValue();
+         idOfEvent= Long.valueOf(tmp).longValue();
       //  Log.d("TESTTESTEST!!!!! ", tmp);
         View detailsView= inflater.inflate(R.layout.event_detailed_view, container, false);
         titel = (TextView)detailsView.findViewById(R.id.event_title_eventdetails);
@@ -87,8 +104,53 @@ public class DetailsViewOfEventChildFragment extends android.support.v4.app.Frag
         adress.setText(event.getAddress());
         titelOfUnique.setText("shared unique");
         dateOfEvent.setText(wholeDateOfEvent);
-        return detailsView;
 
+        //Log.d("unique list created");
+
+        // Initializing views.
+        uniquesForEventRecView = (RecyclerView) detailsView.findViewById(R.id.uniquelistrecyclerview);
+
+        // Initializing SwipeWrapper for the RecyclerView
+        swipeRefreshLayout = (SwipeRefreshLayout) detailsView.findViewById(R.id.swipe_refresh_layout_by_all_uniques);
+        swipeRefreshLayout.setOnRefreshListener(this);
+
+        // If the size of views will not change as the data changes.
+        uniquesForEventRecView.setHasFixedSize(true);
+
+
+        mAllUniquesLayoutManager = new LinearLayoutManager(getActivity());
+        uniquesForEventRecView.setLayoutManager(mAllUniquesLayoutManager);
+
+
+        dataBaseHelper = new DataBaseHelper(getActivity());
+
+        // Setting the adapter.
+        mAllUniquesAdapter = new RecyclerViewAdapterForUniquesOfEvent(retrieveAllUniques());
+        dataBaseHelper.closeDB();
+
+        uniquesForEventRecView.setAdapter(mAllUniquesAdapter);
+        return detailsView;
+    }
+
+
+    //for all uniques from DB
+    public List<Unique> retrieveAllUniques() {
+        return dataBaseHelper.getAllUniquesOfEvent(idOfEvent);
+    }
+
+
+    //animating the refresh with swipe and updates the RecyclerView
+    @Override
+    public void onRefresh() {
+        swipeRefreshLayout.setRefreshing(true);
+        mAllUniquesAdapter = new RecyclerViewAdapterForUniquesOfEvent(retrieveAllUniques());
+        dataBaseHelper.closeDB();
+
+        uniquesForEventRecView.setAdapter(mAllUniquesAdapter);
+
+        mAllUniquesAdapter.notifyDataSetChanged();
+        // stopping swipe refresh
+        swipeRefreshLayout.setRefreshing(false);
 
 
     }

@@ -35,19 +35,19 @@ public class RecyclerViewHolderForPastEvents extends RecyclerView.ViewHolder imp
 
         // Define click listener for the ViewHolder's View.
         itemView.setOnClickListener(this);
-        events=eventList;
+        events = eventList;
     }
 
     @Override
     public void onClick(View v) {
         Log.d("RecViewHolder reported:", "Element " + getPosition() + " clicked.");
-        int idOfEventInDB=events.get(getPosition()).getId();
+        int idOfEventInDB = events.get(getPosition()).getId();
 
-        Intent intent = new Intent().putExtra(Intent.EXTRA_TEXT,  idOfEventInDB);
+        Intent intent = new Intent().putExtra(Intent.EXTRA_TEXT, idOfEventInDB);
 
         DetailsViewOfEventChildFragment fragment = new DetailsViewOfEventChildFragment();
         fragment.setArguments(intent.getExtras());
-        ((MaterialNavigationDrawer) v.getContext()).setFragmentChild(fragment, "Create Event");
+        ((MaterialNavigationDrawer) v.getContext()).setFragmentChild(fragment, "Details Event");
 
 
                 /*
@@ -57,6 +57,6 @@ public class RecyclerViewHolderForPastEvents extends RecyclerView.ViewHolder imp
                     startActivity(intent);
                       * */
 
-         //(MaterialNavigationDrawer) itemView.getContext().set.setFragmentChild(new DetailsViewOfEventChildFragment(), "Child Title");
+        //(MaterialNavigationDrawer) itemView.getContext().set.setFragmentChild(new DetailsViewOfEventChildFragment(), "Child Title");
     }
 }

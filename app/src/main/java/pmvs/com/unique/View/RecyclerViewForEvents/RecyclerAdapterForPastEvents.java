@@ -17,11 +17,11 @@ import pmvs.com.unique.model.Event;
 /**
  * Created by inot on 26.06.15.
  */
-public class RecyclerAdapterForPastEvents  extends RecyclerView.Adapter<RecyclerViewHolderForPastEvents> {
+public class RecyclerAdapterForPastEvents extends RecyclerView.Adapter<RecyclerViewHolderForPastEvents> {
 
     private List<Event> mData = new ArrayList<>();
 
-    public RecyclerAdapterForPastEvents (List<Event> eventList) {
+    public RecyclerAdapterForPastEvents(List<Event> eventList) {
         this.mData = eventList;
     }
 
@@ -38,6 +38,7 @@ public class RecyclerAdapterForPastEvents  extends RecyclerView.Adapter<Recycler
         viewHolder.title.setText(eventForRecyclerView.getTitle());
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
         viewHolder.address.setText(dateFormat.format(eventForRecyclerView.getTillDate()));
+        //todo retrieve real amount from db
         viewHolder.amount.setText("32");
         // viewHolder.icon.setBackgroundColor(Color.parseColor(mData.get(position).color));
     }

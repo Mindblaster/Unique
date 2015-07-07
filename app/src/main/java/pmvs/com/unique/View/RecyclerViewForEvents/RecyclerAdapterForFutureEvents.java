@@ -30,7 +30,7 @@ public class RecyclerAdapterForFutureEvents extends RecyclerView.Adapter<Recycle
     public RecyclerViewHolderForFutureEvents onCreateViewHolder(ViewGroup viewGroup, int position) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         View eventItem = inflater.inflate(R.layout.event_future_item, viewGroup, false);
-        return new RecyclerViewHolderForFutureEvents(eventItem);
+        return new RecyclerViewHolderForFutureEvents(eventItem, mData);
     }
 
     @Override
@@ -39,7 +39,6 @@ public class RecyclerAdapterForFutureEvents extends RecyclerView.Adapter<Recycle
         viewHolder.title.setText(eventForRecyclerView.getTitle());
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
         viewHolder.address.setText(dateFormat.format(eventForRecyclerView.getTillDate()));
-        viewHolder.icon.setBackgroundColor(Color.parseColor("#cccccc"));
         // viewHolder.icon.setBackgroundColor(Color.parseColor(mData.get(position).color));
     }
 

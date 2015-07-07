@@ -17,10 +17,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
+
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
-import pmvs.com.unique.ChildFragment;
+
 import pmvs.com.unique.CreateEventFragment;
 import pmvs.com.unique.R;
 import pmvs.com.unique.View.RecyclerViewForEvents.RecyclerAdapterForFutureEvents;
@@ -69,18 +69,19 @@ public class AllEventsFragment extends android.support.v4.app.Fragment implement
         mFutureLayoutManager = new LinearLayoutManager(getActivity());
         mFutureRecyclerView.setLayoutManager(mFutureLayoutManager);
 
-        //IMPORTANT !Does it work?
 
         mPastLayoutManager = new LinearLayoutManager(getActivity());
         mPastRecyclerView.setLayoutManager(mPastLayoutManager);
 
 
         dataBaseHelper = new DataBaseHelper(getActivity());
-    ///    try {
-     //       createList(1);
-       ///    } catch (ParseException e) {
-            // ignore this
-       // }
+
+        //for mock objects in db
+        ///    try {
+        //       createList(1);
+        ///    } catch (ParseException e) {
+        // ignore this
+        // }
 
         // Setting the adapter.
         mFutureAdapter = new RecyclerAdapterForFutureEvents(retrieveFutureEvents());
@@ -89,7 +90,7 @@ public class AllEventsFragment extends android.support.v4.app.Fragment implement
 
         mFutureRecyclerView.setAdapter(mFutureAdapter);
         mPastRecyclerView.setAdapter(mPastAdapter);
-        //DEIN BUTTON: Listener auf Action Button um items zur Liste zu adden
+        // BUTTON: Listener auf Action Button um items zur Liste zu adden
         View addButton = (View) view.findViewById(R.id.addItem2);
         addButton.setOnClickListener(this);
 
@@ -97,7 +98,7 @@ public class AllEventsFragment extends android.support.v4.app.Fragment implement
         addButton.setOutlineProvider(new ViewOutlineProvider() {
             @Override
             public void getOutline(View view, Outline outline) {
-               // int diameter = getResources().getDimensionPixelSize(R.dimen.add_button_radius);
+                // int diameter = getResources().getDimensionPixelSize(R.dimen.add_button_radius);
                 outline.setOval(5, 5, 85, 85);
             }
         });
@@ -117,6 +118,7 @@ public class AllEventsFragment extends android.support.v4.app.Fragment implement
         }
     }
 
+    //mock data
     public List<Event> createList(int size) throws ParseException {
         List<Event> result = new ArrayList<>();
         SimpleDateFormat simpleDate = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
@@ -143,20 +145,20 @@ public class AllEventsFragment extends android.support.v4.app.Fragment implement
         return result;
     }
 
+    //for all events
     public List<Event> retrieveEvents() {
         return dataBaseHelper.getAllEvents();
     }
 
-    public List<Event> retrievePastEvents()
-    {
+    //for past events
+    public List<Event> retrievePastEvents() {
         return dataBaseHelper.getAllPastEvents();
     }
 
-    public List<Event> retrieveFutureEvents()
-    {
+    //for future events
+    public List<Event> retrieveFutureEvents() {
         return dataBaseHelper.getAllFutureEvents();
     }
-
 
 
     //animating the refresh with swipe and updates the RecyclerView

@@ -207,7 +207,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         createUniqueEventEntry(unique_id, event_id);
 
-
+        Log.d(LOG, +unique_id+" is the inserted unique id");
         return unique_id;
     }
 
@@ -269,12 +269,18 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             unique.setFacebookName(c.getString(c.getColumnIndex(KEY_FB)));
             unique.setTag(c.getString(c.getColumnIndex(KEY_TAG)));
             unique.setText(c.getString(c.getColumnIndex(KEY_TEXT)));
+            unique.setPhoneNumber(c.getString(c.getColumnIndex(KEY_PHONENUM)));
+
             if (c.getString(c.getColumnIndex(KEY_POSITIONLAT)) != null && c.getString(c.getColumnIndex(KEY_POSITIONLNG)) != null) {
                 unique.setPosition(new LatLng(Double.parseDouble(c.getString(c.getColumnIndex(KEY_POSITIONLAT))), Double.parseDouble(c.getString(c.getColumnIndex(KEY_POSITIONLNG)))));
             }
 
             if (c.getInt(c.getColumnIndex(KEY_ISFAVORITE)) == 1) {
                 unique.setFavorite(true);
+            }
+            else{
+                unique.setFavorite(false);
+
             }
         }
         return unique;
@@ -293,6 +299,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             c.moveToFirst();
            result= c.getString(c.getColumnIndex("result"));
         }
+        Log.e(LOG, selectQuery);
+
         return ("1".equals(result));
     }
 
@@ -321,6 +329,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             unique.setFacebookName(c.getString(c.getColumnIndex(KEY_MYFB)));
             unique.setTag(c.getString(c.getColumnIndex(KEY_MYTAG)));
             unique.setText(c.getString(c.getColumnIndex(KEY_MYTEXT)));
+            unique.setPhoneNumber(c.getString(c.getColumnIndex(KEY_MYPHONENUM)));
+
             if (c.getString(c.getColumnIndex(KEY_MYPOSITIONLAT)) != null && c.getString(c.getColumnIndex(KEY_MYPOSITIONLNG)) != null) {
                 unique.setPosition(new LatLng(Double.parseDouble(c.getString(c.getColumnIndex(KEY_MYPOSITIONLAT))), Double.parseDouble(c.getString(c.getColumnIndex(KEY_MYPOSITIONLNG)))));
             }
@@ -351,11 +361,15 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 unique.setName((c.getString(c.getColumnIndex(KEY_UNIQUE_NAME))));
                 unique.seteMail(c.getString(c.getColumnIndex(KEY_EMAIL)));
                 unique.setTwitterName(c.getString(c.getColumnIndex(KEY_TWITTER)));
+                unique.setPhoneNumber(c.getString(c.getColumnIndex(KEY_PHONENUM)));
                 unique.setFacebookName(c.getString(c.getColumnIndex(KEY_FB)));
                 unique.setTag(c.getString(c.getColumnIndex(KEY_TAG)));
                 unique.setText(c.getString(c.getColumnIndex(KEY_TEXT)));
                 if (c.getInt(c.getColumnIndex(KEY_ISFAVORITE)) == 1) {
                     unique.setFavorite(true);
+                }
+                else{
+                    unique.setFavorite(false);
                 }
 
                 // adding to unique list
@@ -386,6 +400,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 unique.setTwitterName(c.getString(c.getColumnIndex(KEY_MYTWITTER)));
                 unique.setFacebookName(c.getString(c.getColumnIndex(KEY_MYFB)));
                 unique.setTag(c.getString(c.getColumnIndex(KEY_MYTAG)));
+                unique.setPhoneNumber(c.getString(c.getColumnIndex(KEY_MYPHONENUM)));
+
                 unique.setText(c.getString(c.getColumnIndex(KEY_MYTEXT)));
 
 
@@ -398,19 +414,25 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
 
 
-    // SELECT * FROM uniques un, events ev, uniques_events unev WHERE ev.ev_name = ‘EXPO’ AND ev.id = unev.ev_id AND un.id = unev.unique_id;
+    // SELECT * FROM uniques un, events ev, uniques_events unev WHERE event.ev_id = ‘2’ AND event.id = uniqueevent.ev_id AND unique.id = uniqueevnt.unique_id;
 
     /**
      * getting all Unique of one Event
      */
     ///TODO EVENT_TITLE CHANGE!
-    public List<Unique> getAllUniquesOfEvent(String event_title) {
+    public List<Unique> getAllUniquesOfEvent(long event_id) {
         List<Unique> uniques = new ArrayList<Unique>();
+        //List<Long> unique_ids= new ArrayList<Long>();
         String selectQuery = "SELECT  * FROM " + TABLE_UNIQUES + " un, "
                 + TABLE_EVENTS + " ev, " + TABLE_UNIQUE_EVENT + " unev WHERE ev."
-                + KEY_EVENT_TITLE + " = '" + event_title + "'" + " AND ev." + KEY_ID
+                + KEY_ID + " = '" + event_id + "'" + " AND ev." + KEY_ID
                 + " = " + "unev." + KEY_EVENTS_ID + " AND un." + KEY_ID + " = "
                 + "unev." + KEY_UNIQUES_ID;
+
+      //  String selectQuery = "SELECT."+ KEY_UNIQUES_ID + "as unid FROM." +  TABLE_UNIQUE_EVENT + " unev WHERE ev."
+        //        + KEY_EVENTS_ID + " = '" + event_id + "'" ;
+        //if (c.moveToFirst()) {
+           // do { unique_ids.add()
 
         Log.e(LOG, selectQuery);
 
@@ -427,9 +449,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 unique.setTwitterName(c.getString(c.getColumnIndex(KEY_TWITTER)));
                 unique.setFacebookName(c.getString(c.getColumnIndex(KEY_FB)));
                 unique.setTag(c.getString(c.getColumnIndex(KEY_TAG)));
+                unique.setPhoneNumber(c.getString(c.getColumnIndex(KEY_PHONENUM)));
+
                 unique.setText(c.getString(c.getColumnIndex(KEY_TEXT)));
                 if (c.getInt(c.getColumnIndex(KEY_ISFAVORITE)) == 1) {
                     unique.setFavorite(true);
+                }else{
+                    unique.setFavorite(false);
                 }
 
                 // adding to unique list
@@ -468,6 +494,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             unique.seteMail(c.getString(c.getColumnIndex(KEY_MYEMAIL)));
             unique.setTwitterName(c.getString(c.getColumnIndex(KEY_MYTWITTER)));
             unique.setFacebookName(c.getString(c.getColumnIndex(KEY_MYFB)));
+            unique.setPhoneNumber(c.getString(c.getColumnIndex(KEY_MYPHONENUM)));
+
             unique.setTag(c.getString(c.getColumnIndex(KEY_MYTAG)));
             unique.setText(c.getString(c.getColumnIndex(KEY_MYTEXT)));
 
@@ -720,7 +748,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         // check if uniques under this event should also be deleted
         if (should_delete_all_event_uniques) {
             // get all uniques under this event
-            List<Unique> allEventUniques = getAllUniquesOfEvent(event.getTitle());
+            List<Unique> allEventUniques = getAllUniquesOfEvent(event.getId());
 
             // delete all Uniques
             for (Unique unique : allEventUniques) {

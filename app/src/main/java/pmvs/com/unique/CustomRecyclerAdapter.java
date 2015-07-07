@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -20,7 +21,7 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<RecyclerViewHold
     private List<Event> mData = new ArrayList<>(); //Collections.emptyList();
 
     public CustomRecyclerAdapter(List<Event> eventList) {
-       this.mData=eventList;
+        this.mData = eventList;
     }
 
     @Override
@@ -37,7 +38,7 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<RecyclerViewHold
         viewHolder.title.setText(eventForRecyclerView.getName());
         viewHolder.title2.setText(eventForRecyclerView.getSurname());
         viewHolder.icon.setBackgroundColor(Color.parseColor("#cccccc"));
-       // viewHolder.icon.setBackgroundColor(Color.parseColor(mData.get(position).color));
+        // viewHolder.icon.setBackgroundColor(Color.parseColor(mData.get(position).color));
     }
 
     @Override
@@ -60,9 +61,6 @@ public class CustomRecyclerAdapter extends RecyclerView.Adapter<RecyclerViewHold
         mData.remove(position);
         notifyItemRemoved(position);
     }
-
-
-
 
 
 }

@@ -1,8 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="100dp"
     android:gravity="center_vertical"
+    android:orientation="horizontal"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
     android:weightSum="1">
@@ -18,38 +18,37 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
+        android:layout_weight="0.9"
         android:orientation="vertical"
-        android:layout_weight="0.9">
+        android:paddingLeft="10dp">
 
         <TextView
             android:id="@+id/title_of_paste_event"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_margin="8dp" />
+            android:layout_margin="8dp"
+            android:layout_weight="1" />
 
         <TextView
             android:id="@+id/address_of_paste_event"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_margin="8dp"
+            android:layout_weight="1"
             android:textStyle="italic" />
 
 
-
     </LinearLayout>
+
     <TextView
         android:id="@+id/amount_of_uniques"
         android:layout_width="0dp"
         android:layout_height="25dp"
-        android:layout_weight="0.1"
         android:layout_margin="8dp"
-        android:textStyle="italic"
+        android:layout_weight="0.1"
+        android:background="@drawable/oval"
         android:gravity="right"
 
-        android:background="@drawable/oval"
-        />
+        android:textStyle="italic" />
 
 </LinearLayout>

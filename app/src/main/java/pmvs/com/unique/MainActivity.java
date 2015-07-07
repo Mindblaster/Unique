@@ -28,6 +28,7 @@ import java.util.ArrayList;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 import pmvs.com.unique.View.AllEventsFragment;
+import pmvs.com.unique.View.AllUniquesFragment;
 import pmvs.com.unique.database.DataBaseHelper;
 import pmvs.com.unique.model.*;
 import pmvs.com.unique.model.Event;
@@ -47,7 +48,7 @@ public class MainActivity extends MaterialNavigationDrawer implements CreateEven
 
 //        this.addSection(this.newSection("MyUniques", new MasterFragment()));
           this.addSection(this.newSection("Events", R.drawable.eventnavicon, new AllEventsFragment()));
-          this.addSection(this.newSection("UniqueBook",R.drawable.uniquebookicon, new MasterFragment()));
+          this.addSection(this.newSection("UniqueBook", R.drawable.uniquebookicon, new AllUniquesFragment()));
           this.addSection(this.newSection("My Uniques", R.drawable.uniquecardsicon, new EventListFragment()));
           this.addBottomSection(newSection("Bottom Section",R.drawable.ic_settings_black_24dp, new MasterFragment()));
 
