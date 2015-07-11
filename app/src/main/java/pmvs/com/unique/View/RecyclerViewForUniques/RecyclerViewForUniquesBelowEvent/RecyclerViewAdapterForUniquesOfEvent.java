@@ -39,7 +39,6 @@ public class RecyclerViewAdapterForUniquesOfEvent extends RecyclerView.Adapter<R
             //todo change Icon
             //viewHolder.unique_icon.setImageBitmap("");
             if(uniqueForAllUniquesView.getFacebookName().length()>2){
-                Log.e(uniqueForAllUniquesView.getFacebookName(), "facebook");
                 viewHolder.fb_icon.setVisibility(View.VISIBLE);
             }
             else {
