@@ -42,7 +42,9 @@ public class DetailsViewOfEventChildFragment extends android.support.v4.app.Frag
     private TextView titel;
     private TextView adress;
     private TextView dateOfEvent;
-    private TextView titelOfUnique;
+    private TextView sharedUnique;
+    private TextView nameOfUnique;
+    private TextView textOfUnique;
     private DataBaseHelper dataBaseHelper;
     private Event event;
     private Date fromDateOfEvent;
@@ -56,6 +58,7 @@ public class DetailsViewOfEventChildFragment extends android.support.v4.app.Frag
     private SwipeRefreshLayout swipeRefreshLayout;
 
     private List<Unique> uniques = new ArrayList<>();
+    private Unique myUnique;
     private long idOfEvent;
 
 
@@ -64,13 +67,17 @@ public class DetailsViewOfEventChildFragment extends android.support.v4.app.Frag
       //  Log.d("MaterialNavigationDrawer Master-Child", "Child created");
         Bundle extras = this.getArguments();
         int tmp = extras.getInt(Intent.EXTRA_TEXT);
-         idOfEvent= Long.valueOf(tmp).longValue();
-      //  Log.d("TESTTESTEST!!!!! ", tmp);
+        idOfEvent= Long.valueOf(tmp).longValue();
+        Integer idOfEventAsInteger=(Integer)tmp;
+        String idOfEventInString=idOfEventAsInteger.toString();
         View detailsView= inflater.inflate(R.layout.event_detailed_view, container, false);
         titel = (TextView)detailsView.findViewById(R.id.event_title_eventdetails);
         adress = (TextView)detailsView.findViewById(R.id.address_of_detailedevent);
         dateOfEvent = (TextView)detailsView.findViewById(R.id.date_of_detailedevent);
-        titelOfUnique = (TextView)detailsView.findViewById(R.id.left_text_button2);
+        sharedUnique = (TextView)detailsView.findViewById(R.id.sharedUnique);
+        nameOfUnique = (TextView)detailsView.findViewById(R.id.name_of_unique);
+        textOfUnique = (TextView)detailsView.findViewById(R.id.descripton_of_unique);
+
         dataBaseHelper = new DataBaseHelper(getActivity());
       /*  Unique fortestDB =new Unique();
         fortestDB.setName("TestName");
@@ -90,6 +97,7 @@ public class DetailsViewOfEventChildFragment extends android.support.v4.app.Frag
 
 
         event= dataBaseHelper.getEvent(idOfEvent);
+        //   myUnique=dataBaseHelper.getMYUniqueOfEvent(idOfEventInString);
         dataBaseHelper.closeDB();
 
         DateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
@@ -103,7 +111,9 @@ public class DetailsViewOfEventChildFragment extends android.support.v4.app.Frag
 
         titel.setText(event.getTitle());
         adress.setText(event.getAddress());
-        titelOfUnique.setText("shared unique");
+  //      sharedUnique.setText("shared unique");
+//        textOfUnique.setText(myUnique.getName());
+
         dateOfEvent.setText(wholeDateOfEvent);
 
         //Log.d("unique list created");

@@ -449,11 +449,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public List<Unique> getAllUniquesOfEvent(long event_id) {
         List<Unique> uniques = new ArrayList<Unique>();
         //List<Long> unique_ids= new ArrayList<Long>();
-        String selectQuery2 = "SELECT  * FROM " + TABLE_UNIQUES + " un, "
+       /* String selectQuery2 = "SELECT  * FROM " + TABLE_UNIQUES + " un, "
                 + TABLE_EVENTS + " ev, " + TABLE_UNIQUE_EVENT + " unev WHERE ev."
                 + KEY_ID + " = '" + event_id + "'" + " AND ev." + KEY_ID
                 + " = " + "unev." + KEY_EVENTS_ID + " AND un." + KEY_ID + " = "
-                + "unev." + KEY_UNIQUES_ID;
+                + "unev." + KEY_UNIQUES_ID;*/
 
 
         String selectQuery = "SELECT un.* FROM " + TABLE_UNIQUES + " un, "
@@ -498,6 +498,31 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return uniques;
     }
 
+    /**
+     * getting all Unique of one Event
+     */
+    public int getCountOfAllUniquesOfEvent(long event_id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String countQuery = "SELECT un.* FROM " + TABLE_UNIQUES + " un, "
+                + TABLE_UNIQUE_EVENT + " unev WHERE "
+                + "unev." + KEY_EVENTS_ID + " = '" + event_id + "' AND un." + KEY_ID + " = "
+                + "unev." + KEY_UNIQUES_ID;
+
+        Cursor cursor = db.rawQuery(countQuery, null);
+
+        int count = cursor.getCount();
+
+        cursor.close();
+       // System.out.println("count="+ count);
+
+        return count;
+    }
+
+
+
+
+
     // SELECT * FROM myuniques un, events ev, myuniques_events unev WHERE ev.ev_name = ‘EXPO’ AND ev.id = unev.ev_id AND un.id = unev.unique_id;
 
     /**
@@ -508,7 +533,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         String selectQuery = "SELECT  * FROM " + TABLE_MYUNIQUES + " myun, "
                 + TABLE_EVENTS + " ev, " + TABLE_MYUNIQUE_EVENT + " myunev WHERE ev."
-                + KEY_EVENT_TITLE + " = '" + event_title + "'" + " AND ev." + KEY_ID
+                + KEY_EVENTS_ID + " = '" + event_title + "'" + " AND ev." + KEY_ID
                 + " = " + "myunev." + KEY_EVENTS_ID + " AND myun." + KEY_ID + " = "
                 + "myunev." + KEY_MYUNIQUES_ID;
 
@@ -517,21 +542,27 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery(selectQuery, null);
         Unique unique = new Unique();
+        if(c.getCount() < 0){
+            if (c.moveToFirst()) {
 
-        // looping through all rows and adding to list
-        if (c.moveToFirst()) {
+                unique.setLocalID(c.getInt((c.getColumnIndex(KEY_ID))));
+                unique.setName((c.getString(c.getColumnIndex(KEY_MYUNIQUE_NAME))));
+                unique.seteMail(c.getString(c.getColumnIndex(KEY_MYEMAIL)));
+                unique.setTwitterName(c.getString(c.getColumnIndex(KEY_MYTWITTER)));
+                unique.setFacebookName(c.getString(c.getColumnIndex(KEY_MYFB)));
+                unique.setPhoneNumber(c.getString(c.getColumnIndex(KEY_MYPHONENUM)));
 
-            unique.setLocalID(c.getInt((c.getColumnIndex(KEY_ID))));
-            unique.setName((c.getString(c.getColumnIndex(KEY_MYUNIQUE_NAME))));
-            unique.seteMail(c.getString(c.getColumnIndex(KEY_MYEMAIL)));
-            unique.setTwitterName(c.getString(c.getColumnIndex(KEY_MYTWITTER)));
-            unique.setFacebookName(c.getString(c.getColumnIndex(KEY_MYFB)));
-            unique.setPhoneNumber(c.getString(c.getColumnIndex(KEY_MYPHONENUM)));
-
-            unique.setTag(c.getString(c.getColumnIndex(KEY_MYTAG)));
-            unique.setText(c.getString(c.getColumnIndex(KEY_MYTEXT)));
-
+                unique.setTag(c.getString(c.getColumnIndex(KEY_MYTAG)));
+                unique.setText(c.getString(c.getColumnIndex(KEY_MYTEXT)));
+                return unique;
+            }
         }
+        else {
+            unique.setName("TestName");
+            unique.setText("mein Text");
+            return unique;
+        }
+
 
 
         return unique;
@@ -637,9 +668,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         // insert row
         long event_id = db.insert(TABLE_EVENTS, null, values);
         //just because of needed event id after inserting in the DB
-        if (event.isUniqueShared()) {
             createMyUniqueEventEntry(myunqiue_id, event_id);
-        }
+
         return event_id;
     }
 

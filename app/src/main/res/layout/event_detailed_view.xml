@@ -118,7 +118,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/left_text_button2"
+                    android:id="@+id/sharedUnique"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingBottom="16dp"
@@ -130,16 +130,25 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/right_text_button2"
+                    android:id="@+id/name_of_unique"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingBottom="16dp"
                     android:paddingLeft="8dp"
                     android:paddingRight="16dp"
-                    android:paddingTop="16dp"
-                    android:textColor="#4B0082"
+                    android:textSize="18dp"
+                   />
+                <TextView
+                    android:id="@+id/descripton_of_unique"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="16dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="16dp"
+                    android:paddingTop="2dp"
                     android:textSize="14sp"
-                    android:textStyle="bold" />
+                    android:textStyle="italic"
+                   />
             </LinearLayout>
         </LinearLayout>
         <include  layout="@layout/alluniquesresview"

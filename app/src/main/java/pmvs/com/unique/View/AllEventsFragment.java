@@ -85,7 +85,7 @@ public class AllEventsFragment extends android.support.v4.app.Fragment implement
 
         // Setting the adapter.
         mFutureAdapter = new RecyclerAdapterForFutureEvents(retrieveFutureEvents());
-        mPastAdapter = new RecyclerAdapterForPastEvents(retrievePastEvents());
+        mPastAdapter = new RecyclerAdapterForPastEvents(retrievePastEvents(), getActivity());
         dataBaseHelper.closeDB();
 
         mFutureRecyclerView.setAdapter(mFutureAdapter);
