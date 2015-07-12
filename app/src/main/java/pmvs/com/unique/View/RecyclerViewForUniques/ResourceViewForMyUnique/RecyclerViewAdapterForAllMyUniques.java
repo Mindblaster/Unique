@@ -1,5 +1,7 @@
 package pmvs.com.unique.View.RecyclerViewForUniques.ResourceViewForMyUnique;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +10,11 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
+import pmvs.com.unique.CreateEventFragment;
 import pmvs.com.unique.R;
+import pmvs.com.unique.SharedPreferencesManager;
+import pmvs.com.unique.View.DetailViewOfMyUniqueChildFragment;
 import pmvs.com.unique.model.Unique;
 
 /**
@@ -17,9 +23,14 @@ import pmvs.com.unique.model.Unique;
 public class RecyclerViewAdapterForAllMyUniques extends RecyclerView.Adapter<RecyclerViewHolderForAllMyUniques> {
 
     private List<Unique> myuniques = new ArrayList<>();
+    private Activity activity;
+    SharedPreferencesManager sharedPreferencesManager;
 
-    public RecyclerViewAdapterForAllMyUniques(List<Unique> uniqueList) {
+
+    public RecyclerViewAdapterForAllMyUniques(List<Unique> uniqueList, Activity activity) {
         this.myuniques = uniqueList;
+        this.activity=activity;
+        sharedPreferencesManager = new SharedPreferencesManager(activity);
     }
 
     //inflate the correct view
@@ -27,7 +38,7 @@ public class RecyclerViewAdapterForAllMyUniques extends RecyclerView.Adapter<Rec
     public RecyclerViewHolderForAllMyUniques onCreateViewHolder(ViewGroup viewGroup, int position) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         View eventItem = inflater.inflate(R.layout.my_unique_item, viewGroup, false);
-        return new RecyclerViewHolderForAllMyUniques(eventItem, myuniques);
+        return new RecyclerViewHolderForAllMyUniques(eventItem, myuniques,activity);
     }
 
     //set data to the correct layout elements
@@ -36,9 +47,7 @@ public class RecyclerViewAdapterForAllMyUniques extends RecyclerView.Adapter<Rec
         Unique myuniqueForAllUniquesView = myuniques.get(position);
         viewHolder.name.setText(myuniqueForAllUniquesView.getName());
         viewHolder.message.setText(myuniqueForAllUniquesView.getText());
-        viewHolder.fb.setText(myuniqueForAllUniquesView.getFacebookName());
-        viewHolder.twitter.setText(myuniqueForAllUniquesView.getTwitterName());
-        viewHolder.tel.setText(myuniqueForAllUniquesView.getPhoneNumber());
+        final Unique backup=myuniqueForAllUniquesView;
 
 
         //todo change Icon
@@ -59,6 +68,17 @@ public class RecyclerViewAdapterForAllMyUniques extends RecyclerView.Adapter<Rec
         } else {
             viewHolder.tel_icon.setVisibility(View.INVISIBLE);
         }
+        final int position2 = position;
+
+        viewHolder.selectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int myidOfUniqueInDB;
+                myidOfUniqueInDB = backup.getLocalID();
+                sharedPreferencesManager.saveKey(Integer.toString(myidOfUniqueInDB));
+                activity.onBackPressed();
+            }
+        });
 
     }
 

@@ -1,5 +1,6 @@
 package pmvs.com.unique.View;
 
+import android.app.Activity;
 import android.graphics.Outline;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -34,6 +35,9 @@ public class AllMyUniquesFragment extends android.support.v4.app.Fragment implem
     private DataBaseHelper dataBaseHelper;
     private Button selectButton;
     private List<Unique> myuniques = new ArrayList<>();
+    private boolean selectPressed = false;
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -87,7 +91,7 @@ public class AllMyUniquesFragment extends android.support.v4.app.Fragment implem
         dataBaseHelper = new DataBaseHelper(getActivity());
 
         // Setting the adapter.
-        myAllUniquesAdapter = new RecyclerViewAdapterForAllMyUniques(retrieveAllMyUniques());
+        myAllUniquesAdapter = new RecyclerViewAdapterForAllMyUniques(retrieveAllMyUniques(),getActivity());
         dataBaseHelper.closeDB();
 
         myAllUniquesRecyclerView.setAdapter(myAllUniquesAdapter);
@@ -105,7 +109,7 @@ public class AllMyUniquesFragment extends android.support.v4.app.Fragment implem
     @Override
     public void onRefresh() {
         swipeRefreshLayout.setRefreshing(true);
-        myAllUniquesAdapter = new RecyclerViewAdapterForAllMyUniques(retrieveAllMyUniques());
+        myAllUniquesAdapter = new RecyclerViewAdapterForAllMyUniques(retrieveAllMyUniques(),getActivity());
         dataBaseHelper.closeDB();
 
         myAllUniquesRecyclerView.setAdapter(myAllUniquesAdapter);

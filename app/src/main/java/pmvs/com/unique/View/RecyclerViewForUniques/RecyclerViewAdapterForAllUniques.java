@@ -69,6 +69,7 @@ public class RecyclerViewAdapterForAllUniques extends RecyclerView.Adapter<Recyc
             else {
                 viewHolder.fav_icon.setVisibility(View.INVISIBLE);
             }
+
         }
 
         @Override

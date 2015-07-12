@@ -18,8 +18,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.ToggleButton;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.parse.ParseException;
@@ -33,6 +36,7 @@ import java.util.List;
 import java.util.Locale;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
+import pmvs.com.unique.View.AllMyUniquesFragment;
 import pmvs.com.unique.database.DataBaseHelper;
 import pmvs.com.unique.model.*;
 import pmvs.com.unique.model.Event;
@@ -66,6 +70,11 @@ public class CreateEventFragment extends DialogFragment {
     private EditText eventLocation;
     private ImageView imageView;
 
+    private ImageButton imageButton;
+    private TextView myUniqueCaption;
+    private TextView myUniqueName;
+    private TextView myUniqueDescription;
+
     private Date startingDate;
     private Date endingDate;
 
@@ -73,6 +82,10 @@ public class CreateEventFragment extends DialogFragment {
     private DataBaseHelper dataBaseHelper;
     private ParseManager parseManager;
     private CreateFragmentImageInterface createFragmentImageInterface;
+
+    private Unique unique;
+
+    private SharedPreferencesManager sharedPreferencesManager;
 
 
 
@@ -93,12 +106,37 @@ public class CreateEventFragment extends DialogFragment {
         createButton=(Button)view.findViewById(R.id.create_button);
         cancelButton=(Button)view.findViewById(R.id.cancel_button);
 
+        myUniqueCaption = (TextView) view.findViewById(R.id.myUnique_caption);
+        myUniqueName = (TextView) view.findViewById(R.id.unique_name);
+        myUniqueDescription=(TextView) view.findViewById(R.id.unique_description);
+
+        imageButton = (ImageButton) view.findViewById(R.id.unique_add_button);
+        imageButton.setVisibility(View.VISIBLE);
+
         imageView=(ImageView) view.findViewById(R.id.photo);
 
         eventTitle=(EditText)view.findViewById(R.id.event_title);
         eventLocation=(EditText)view.findViewById(R.id.event_location_name);
 
+
         dataBaseHelper= new DataBaseHelper(getActivity());
+        sharedPreferencesManager = new SharedPreferencesManager(getActivity());
+        long idOfUnique=0;
+
+
+
+        if(sharedPreferencesManager.KeyExists()) {
+            idOfUnique = Integer.parseInt(sharedPreferencesManager.getKey());
+            sharedPreferencesManager.removeKey();
+            unique= dataBaseHelper.getMyUnique(idOfUnique);
+            myUniqueCaption.setText("Shared Unique:");
+            imageButton.setVisibility(View.INVISIBLE);
+            myUniqueName.setVisibility(View.VISIBLE);
+            myUniqueName.setText(unique.getName());
+            myUniqueDescription.setVisibility(View.VISIBLE);
+            myUniqueDescription.setText(unique.getText());
+        }
+
 
         dateStringConverter =new DateStringConverter();
         startDate.setText(dateStringConverter.dateToStringDate(new Date()));
@@ -240,6 +278,15 @@ public class CreateEventFragment extends DialogFragment {
                 createFragmentImageInterface.setImage(imageView);
             }
         });
+
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MaterialNavigationDrawer) getActivity()).setFragmentChild(new AllMyUniquesFragment(), "All MyUniques");
+            }
+        });
+
+
 
 
     }

@@ -22,14 +22,14 @@ public class SharedPreferencesManager {
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("ServerID", key);
+        editor.putString("LocalUniqueID", key);
         editor.commit();
     }
 
     public String getKey() {
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context);
-        String name = sharedPreferences.getString("ServerID", "none");
+        String name = sharedPreferences.getString("LocalUniqueID", "none");
         return name;
     }
 
@@ -38,6 +38,14 @@ public class SharedPreferencesManager {
         if (serverID.equals("none")) {
             return false;
         } else return true;
+    }
+
+    public void removeKey(){
+        SharedPreferences sharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.commit();
     }
 
 }

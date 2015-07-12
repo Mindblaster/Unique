@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,6 +31,8 @@ public class RecyclerViewHolderForAllUniques extends RecyclerView.ViewHolder  im
 
     public List<Unique> uniques;
     public ImageView unique_icon;
+
+
     //initialize all view elemnts for the adapter
     public RecyclerViewHolderForAllUniques(View itemView,  List<Unique> uniqueList) {
         super(itemView);
@@ -59,6 +62,6 @@ public class RecyclerViewHolderForAllUniques extends RecyclerView.ViewHolder  im
         fragment.setArguments(intent.getExtras());
        ((MaterialNavigationDrawer) v.getContext()).setFragmentChild(fragment, "Details Unique");
 
-
     }
+
 }

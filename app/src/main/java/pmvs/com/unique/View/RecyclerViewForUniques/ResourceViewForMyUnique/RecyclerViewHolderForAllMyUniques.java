@@ -1,9 +1,11 @@
 package pmvs.com.unique.View.RecyclerViewForUniques.ResourceViewForMyUnique;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -33,9 +35,15 @@ public class RecyclerViewHolderForAllMyUniques extends RecyclerView.ViewHolder i
 
     public List<Unique> myuniques;
     public ImageView unique_icon;
+
+    public Button selectButton;
+
+
+
     //initialize all view elemnts for the adapter
 
-    public RecyclerViewHolderForAllMyUniques(View itemView, List<Unique> myuniqueList) {
+    public RecyclerViewHolderForAllMyUniques(View itemView, List<Unique> myuniqueList,Activity activity)
+        {
         super(itemView);
         name = (TextView) itemView.findViewById(R.id.my_unique_name);
         message = (TextView) itemView.findViewById(R.id.my_unique_description);
@@ -43,10 +51,7 @@ public class RecyclerViewHolderForAllMyUniques extends RecyclerView.ViewHolder i
         fb_icon = (ImageView) itemView.findViewById(R.id.facebook_icon);
         twitter_icon = (ImageView) itemView.findViewById(R.id.twitter_icon);
         tel_icon = (ImageView) itemView.findViewById(R.id.phone_icon);
-
-        fb = (TextView) itemView.findViewById(R.id.my_unique_fb);
-        twitter = (TextView) itemView.findViewById(R.id.my_unique_twitter);
-        tel = (TextView) itemView.findViewById(R.id.my_unique_phone);
+        selectButton= (Button) itemView.findViewById(R.id.select_button);
 
         myuniques = myuniqueList;
 
