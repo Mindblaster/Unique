@@ -207,6 +207,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         createUniqueEventEntry(unique_id, event_id);
 
         Log.d(LOG, +unique_id + " is the inserted unique id");
+
         return unique_id;
     }
 
@@ -290,7 +291,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     /*
     * get the flag whether single unique is in the DB or not
     * */
-    public boolean isUniqueInDB(String serverID) {
+  /*  public boolean isUniqueInDB(String serverID) {
         SQLiteDatabase db = this.getReadableDatabase();
         String result = "";
         String selectQuery = "SELECT  COUNT (*) as result FROM " + TABLE_UNIQUES + " WHERE "
@@ -303,9 +304,20 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         Log.e(LOG, selectQuery);
 
         return ("1".equals(result));
+    }*/
+
+    public  boolean isUniqueInDB( String serverID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String Query = "Select * from " + TABLE_UNIQUES + " where " + KEY_SERVERID + " = " + "'" + serverID +"'";
+        Cursor cursor = db.rawQuery(Query, null);
+        Log.e(LOG, Query);
+        if(cursor.getCount() <= 0){
+            cursor.close();
+            return false;
+        }
+        cursor.close();
+        return true;
     }
-
-
     /**
      * get single myUnique
      */
@@ -547,6 +559,24 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         // updating row
         return db.update(TABLE_UNIQUES, values, KEY_ID + " = ?",
                 new String[]{String.valueOf(unique.getLocalID())});
+    }
+    /**
+     * set serverID for MyUnique
+     */
+    public int setServerIDOfMyUnique(Unique unique) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        if (unique.getServerID().length() > 1) {
+            values.put(KEY_SERVERID, unique.getServerID());
+        } else {
+            values.put(KEY_SERVERID, 0);
+        }
+
+
+        // updating row
+        return db.update(TABLE_MYUNIQUES, values, KEY_ID + " = ?",
+                new String[]{String.valueOf(unique.getServerID())});
     }
 
     /**
@@ -798,7 +828,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         values.put(KEY_EVENTS_ID, event_id);
 
         long id = db.insert(TABLE_UNIQUE_EVENT, null, values);
-
+        Log.d(LOG, +unique_id +" by "+event_id+ " is uniqueId iby Event id in "+ id+ "Id in Unique-Event Table ");
         return id;
     }
 

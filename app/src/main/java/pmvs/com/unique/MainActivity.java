@@ -32,7 +32,7 @@ import pmvs.com.unique.model.Unique;
 public class MainActivity extends MaterialNavigationDrawer implements CreateEventFragment.CreateFragmentImageInterface {
     private final int SELECT_PHOTO = 1;
     private ImageView imageView;
-    private DataBaseHelper dataBaseHelper;
+
 
     @Override
     public void init(Bundle savedInstanceState) {
@@ -51,10 +51,6 @@ public class MainActivity extends MaterialNavigationDrawer implements CreateEven
         Intent intent = new Intent(MainActivity.this, UniqueService.class);
         intent.putExtra("FLAG", 2);
         startService(intent);
-
-       // dataBaseHelper.isUniqueInDB("+'TVKjxjTkNf'+");
-       // List<Unique> uniques = new ArrayList<Unique>();
-      //  uniques=dataBaseHelper.getAllUniques();
 
 
         //Check if internet Connection is available
