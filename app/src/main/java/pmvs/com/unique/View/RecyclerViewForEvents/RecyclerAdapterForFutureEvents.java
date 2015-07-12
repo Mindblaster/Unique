@@ -38,7 +38,7 @@ public class RecyclerAdapterForFutureEvents extends RecyclerView.Adapter<Recycle
         Event eventForRecyclerView = mData.get(position);
         viewHolder.title.setText(eventForRecyclerView.getTitle());
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-        viewHolder.address.setText(dateFormat.format(eventForRecyclerView.getTillDate()));
+        viewHolder.address.setText(dateFormat.format(eventForRecyclerView.getFromDate()));
         // viewHolder.icon.setBackgroundColor(Color.parseColor(mData.get(position).color));
     }
 

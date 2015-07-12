@@ -222,45 +222,42 @@ public class CreateEventFragment extends DialogFragment {
             public void onClick(View v) {
                 if(!checkifEmpty()){
                     if (!checkDates()) {
-                        //TODO: Check Unique
+                         if (checkMyUnique()) {
+                             try {
+                                 unique.setPosition(new LatLng(0,0));
+                                 unique.setServerID(parseManager.uploadUnique(unique));
+                             } catch (ParseException pe) {
+                                 Log.e("Failure", "Error Failed to Upload Unique");
+                             }
+
+
 // public Event(int initId, String initTitle, Date initFrom, Date initTill, String initAddress, int initMyUniqueID, boolean initUniqueShared, List<Unique> initReceivedUniques, String initEventPic) {
-                        List<Unique> listUnique = new ArrayList<>();
-                        event= new Event(0, eventTitle.getText().toString(),startingDate,endingDate,eventLocation.getText().toString(),0,false,listUnique,"kkk.jpg");
+                             List<Unique> listUnique = new ArrayList<>();
+                             event = new Event(0, eventTitle.getText().toString(), startingDate, endingDate, eventLocation.getText().toString(), 0, false, listUnique, "kkk.jpg");
 
 
-                        ////testUnique
-                        Unique unique = new Unique("MyUnique", 123, "personal", "Please meet me!", "08912345678", "maxmustermann@test.de", "max", "mmuster", false);
-                        unique.setPosition(new LatLng(48.163327, 11.565246));
+                             //TODO: set serverID in Local Database
+                             long localEventID = dataBaseHelper.createEventEntry(event);
+                             dataBaseHelper.closeDB();
 
-                        try {
-                            unique.setServerID(parseManager.uploadUnique(unique));
-                        } catch (ParseException pe) {
-                            Log.e("Failure", "Error Failed to Upload Unique");
-                        }
-
-
-                        //TODO: set serverID in Local Database
-                        long localEventID=dataBaseHelper.createEventEntry(event);
-                        dataBaseHelper.closeDB();
-
-                        Intent newIntent = new Intent(getActivity(), UniqueService.class);
-                        newIntent.putExtra("FLAG", 0);
-                        newIntent.putExtra("from", dateStringConverter.dateToString(startingDate));
-                        newIntent.putExtra("till", dateStringConverter.dateToString(endingDate));
-                        newIntent.putExtra("Unique_ServerID", unique.getServerID());
-                        newIntent.putExtra("Local_EventID", localEventID);
-                        getActivity().startService(newIntent);
-                        getActivity().getSupportFragmentManager().popBackStack();
+                             Intent newIntent = new Intent(getActivity(), UniqueService.class);
+                             newIntent.putExtra("FLAG", 0);
+                             newIntent.putExtra("from", dateStringConverter.dateToString(startingDate));
+                             newIntent.putExtra("till", dateStringConverter.dateToString(endingDate));
+                             newIntent.putExtra("Unique_ServerID", unique.getServerID());
+                             newIntent.putExtra("Local_EventID", localEventID);
+                             getActivity().startService(newIntent);
+                             getActivity().getSupportFragmentManager().popBackStack();
 
 
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                        builder.setMessage("Event was Created")
-                                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        getActivity().onBackPressed();
-                                    }
-                                }).create().show();
-
+                             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                             builder.setMessage("Event was Created")
+                                     .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                         public void onClick(DialogInterface dialog, int id) {
+                                             getActivity().onBackPressed();
+                                         }
+                                     }).create().show();
+                         }
                     }
                 }
             }
@@ -364,7 +361,7 @@ public class CreateEventFragment extends DialogFragment {
         Date currentDateTime = new Date();
         //1) check if starting date is today or in the future
         System.out.println(currentDateTime.compareTo(startingDate));
-        if ( startingDate.getTime()- System.currentTimeMillis() < 300000) {
+        if ( startingDate.getTime()- System.currentTimeMillis() < 90000) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setMessage("Please set a Starting Date and Time at least 5 Minutes from now")
                         .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -387,6 +384,20 @@ public class CreateEventFragment extends DialogFragment {
             }
         }
         return false;
+    }
+
+    private boolean checkMyUnique(){
+        if(unique!=null){return true;}
+        else{
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage("Please add a Unique to share")
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                        }
+                    }).create().show();
+            return false;
+        }
+
     }
     @Override
          public void onAttach(Activity activity) {

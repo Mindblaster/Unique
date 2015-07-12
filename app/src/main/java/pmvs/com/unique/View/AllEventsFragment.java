@@ -118,7 +118,7 @@ public class AllEventsFragment extends android.support.v4.app.Fragment implement
         }
     }
 
-    //mock data
+    //mock data for test
     public List<Event> createList(int size) throws ParseException {
         List<Event> result = new ArrayList<>();
         SimpleDateFormat simpleDate = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");

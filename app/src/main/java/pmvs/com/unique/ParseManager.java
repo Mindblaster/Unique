@@ -58,7 +58,9 @@ public class ParseManager {
         Unique defaultUnique;
         for (int i = 0; i < uniquePositions.size(); i++) {
             defaultUnique = new Unique(uniquePositions.get(i).getString("Name"), 0, uniquePositions.get(i).getString("Tag"), uniquePositions.get(i).getString("Text"), uniquePositions.get(i).getString("PhoneNumber"), uniquePositions.get(i).getString("EMail"), uniquePositions.get(i).getString("Facebook"), uniquePositions.get(i).getString("Twitter"), false);
+            defaultUnique.setServerID(uniquePositions.get(i).getObjectId());
             uniques.add(i, defaultUnique);
+            System.out.println("default unique " + defaultUnique.getServerID());
         }
         return uniques;
     }

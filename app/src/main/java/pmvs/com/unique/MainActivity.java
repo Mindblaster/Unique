@@ -14,11 +14,16 @@ import com.parse.Parse;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 import pmvs.com.unique.View.AllEventsFragment;
 import pmvs.com.unique.View.AllMyUniquesFragment;
+import pmvs.com.unique.View.AllMyUniquesWithoutSelect;
 import pmvs.com.unique.View.AllUniquesFragment;
+import pmvs.com.unique.database.DataBaseHelper;
+import pmvs.com.unique.model.Unique;
 
 /**
  * Created by inot on 25.05.15.
@@ -27,6 +32,7 @@ import pmvs.com.unique.View.AllUniquesFragment;
 public class MainActivity extends MaterialNavigationDrawer implements CreateEventFragment.CreateFragmentImageInterface {
     private final int SELECT_PHOTO = 1;
     private ImageView imageView;
+    private DataBaseHelper dataBaseHelper;
 
     @Override
     public void init(Bundle savedInstanceState) {
@@ -36,7 +42,7 @@ public class MainActivity extends MaterialNavigationDrawer implements CreateEven
 //        this.addSection(this.newSection("MyUniques", new MasterFragment()));
         this.addSection(this.newSection("Events", R.drawable.eventnavicon, new AllEventsFragment()));
         this.addSection(this.newSection("Uniques", R.drawable.uniquebookicon, new AllUniquesFragment()));
-        this.addSection(this.newSection("My Uniques", R.drawable.uniquecardsicon, new AllMyUniquesFragment()));
+        this.addSection(this.newSection("My Uniques", R.drawable.uniquecardsicon, new AllMyUniquesWithoutSelect()));
         this.addBottomSection(newSection("Impressum", R.drawable.ic_settings_black_24dp, new SettingsFragment()));
 
 
@@ -45,6 +51,11 @@ public class MainActivity extends MaterialNavigationDrawer implements CreateEven
         Intent intent = new Intent(MainActivity.this, UniqueService.class);
         intent.putExtra("FLAG", 2);
         startService(intent);
+
+       // dataBaseHelper.isUniqueInDB("+'TVKjxjTkNf'+");
+       // List<Unique> uniques = new ArrayList<Unique>();
+      //  uniques=dataBaseHelper.getAllUniques();
+
 
         //Check if internet Connection is available
         if (isConnectingToInternet()) {

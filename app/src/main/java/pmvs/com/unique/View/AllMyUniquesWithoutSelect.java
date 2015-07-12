@@ -1,6 +1,5 @@
 package pmvs.com.unique.View;
 
-import android.app.Activity;
 import android.graphics.Outline;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,31 +12,31 @@ import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
 import android.widget.Button;
 
-import com.google.android.gms.maps.model.LatLng;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import it.neokree.materialnavigationdrawer.MaterialNavigationDrawer;
 import pmvs.com.unique.R;
 import pmvs.com.unique.View.RecyclerViewForUniques.ResourceViewForMyUnique.RecyclerViewAdapterForAllMyUniques;
+import pmvs.com.unique.View.RecyclerViewForUniques.ResourceViewForMyUnique.RecyclerViewAdapterMyAllUniques;
 import pmvs.com.unique.database.DataBaseHelper;
 import pmvs.com.unique.model.Unique;
 
 /**
- * Created by inot on 06.07.15.
+ * Created by inot on 12.07.15.
  */
-public class AllMyUniquesFragment extends android.support.v4.app.Fragment implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
+public class AllMyUniquesWithoutSelect extends android.support.v4.app.Fragment implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
 
 
     private RecyclerView myAllUniquesRecyclerView;
-    private RecyclerViewAdapterForAllMyUniques myAllUniquesAdapter;
+    private RecyclerViewAdapterMyAllUniques myAllUniquesAdapter;
     private RecyclerView.LayoutManager myAllUniquesLayoutManager;
     private SwipeRefreshLayout swipeRefreshLayout;
     private DataBaseHelper dataBaseHelper;
-    private Button selectButton;
+
     private List<Unique> myuniques = new ArrayList<>();
-    private boolean selectPressed = false;
+
+
 
 
 
@@ -45,22 +44,8 @@ public class AllMyUniquesFragment extends android.support.v4.app.Fragment implem
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //Log.d("unique list created");
 
-        View view = inflater.inflate(R.layout.allmyuniques, container, false);
+        View view = inflater.inflate(R.layout.allmyuniques_without_select, container, false);
         dataBaseHelper = new DataBaseHelper(getActivity());
-       /*Unique fortestDB =new Unique();
-        fortestDB.setName("TestName");
-        fortestDB.seteMail("test@mail.de");
-        fortestDB.setTag("1");
-        fortestDB.setText("langer Textblablablabla");
-        fortestDB.setFacebookName("testfbname");
-        fortestDB.setPhoneNumber("000000222222");
-        fortestDB.setServerID("123");
-        fortestDB.setTwitterName("twitttestname");
-        LatLng bla=new LatLng(Double.parseDouble("12.34"),Double.parseDouble("44.44"));
-        fortestDB.setPosition((bla));
-       long entryId= dataBaseHelper.createUniqueEntry(fortestDB);*/
-
-
 
         View addButton = view.findViewById(R.id.addItem2);
         addButton.setOnClickListener(this);
@@ -74,7 +59,6 @@ public class AllMyUniquesFragment extends android.support.v4.app.Fragment implem
             }
         });
 
-        selectButton = (Button) view.findViewById(R.id.select_button);
 
 
         // Initializing views.
@@ -95,7 +79,7 @@ public class AllMyUniquesFragment extends android.support.v4.app.Fragment implem
         dataBaseHelper = new DataBaseHelper(getActivity());
 
         // Setting the adapter.
-        myAllUniquesAdapter = new RecyclerViewAdapterForAllMyUniques(retrieveAllMyUniques(),getActivity());
+        myAllUniquesAdapter = new RecyclerViewAdapterMyAllUniques(retrieveAllMyUniques());
         dataBaseHelper.closeDB();
 
         myAllUniquesRecyclerView.setAdapter(myAllUniquesAdapter);
@@ -113,7 +97,7 @@ public class AllMyUniquesFragment extends android.support.v4.app.Fragment implem
     @Override
     public void onRefresh() {
         swipeRefreshLayout.setRefreshing(true);
-        myAllUniquesAdapter = new RecyclerViewAdapterForAllMyUniques(retrieveAllMyUniques(),getActivity());
+        myAllUniquesAdapter = new RecyclerViewAdapterMyAllUniques(retrieveAllMyUniques());
         dataBaseHelper.closeDB();
 
         myAllUniquesRecyclerView.setAdapter(myAllUniquesAdapter);

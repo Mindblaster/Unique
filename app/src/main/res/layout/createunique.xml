@@ -45,7 +45,8 @@
                     android:paddingTop="16dp"
                     android:textColor="#cccccc"
                     android:textSize="24sp"
-                    android:hint="Your Name"/>
+                    android:hint="Your Name"
+                    android:imeOptions="actionDone"/>
 
                 <LinearLayout
                     android:layout_width="fill_parent"
@@ -69,7 +70,8 @@
                         android:paddingRight="16dp"
                         android:textColor="#cccccc"
                         android:textSize="16sp"
-                        android:hint="facebook"/>
+                        android:hint="facebook"
+                        android:imeOptions="actionDone"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -94,7 +96,8 @@
                         android:paddingRight="16dp"
                         android:textColor="#cccccc"
                         android:textSize="16sp"
-                        android:hint="twitter"/>
+                        android:hint="twitter"
+                        android:imeOptions="actionDone"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -119,7 +122,8 @@
                         android:paddingRight="16dp"
                         android:textColor="#cccccc"
                         android:textSize="16sp"
-                        android:hint="Tel Nr."/>
+                        android:hint="Tel Nr."
+                        android:imeOptions="actionDone"/>
                 </LinearLayout>
 
                 <EditText
@@ -131,7 +135,8 @@
                     android:paddingRight="16dp"
                     android:textColor="#cccccc"
                     android:textSize="20sp"
-                    android:hint="your unique message"/>
+                    android:hint="your unique message"
+                    android:imeOptions="actionDone"/>
 
                 <View
                     android:id="@+id/cardDivider"

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/cardView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        card_view:cardCornerRadius="2dp"
+        card_view:cardElevation="10dp">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            >
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:weightSum="1"
+                >
+
+                <ImageView
+                    android:id="@+id/my_unique_photo"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/pilot"
+                    android:scaleType="centerCrop"/>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingLeft="10dp"
+                    android:weightSum="1"
+                    android:layout_weight="0.9"
+                    >
+
+                    <TextView
+                        android:id="@+id/my_unique_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:layout_weight="1"
+                        android:textSize="18dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/my_unique_description"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:layout_weight="1"
+                        android:textStyle="italic" />
+
+
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="0.1"
+                    android:paddingTop="20dp"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/facebook_icon"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:paddingTop="5dp"
+                        android:visibility="invisible"
+                        android:src="@drawable/fb_grey"
+                        />
+                    <ImageView
+                        android:id="@+id/twitter_icon"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:paddingTop="5dp"
+                        android:visibility="invisible"
+                        android:src="@drawable/twittergrey"
+                        />
+                    <ImageView
+                        android:id="@+id/phone_icon"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:paddingTop="5dp"
+                        android:visibility="invisible"
+                        android:src="@drawable/handy_grey"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>
+
+
+

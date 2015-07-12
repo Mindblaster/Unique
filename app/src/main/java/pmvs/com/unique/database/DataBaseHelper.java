@@ -294,7 +294,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         String result = "";
         String selectQuery = "SELECT  COUNT (*) as result FROM " + TABLE_UNIQUES + " WHERE "
-                + KEY_SERVERID + " = " + serverID;
+                + KEY_SERVERID + " = " + 2;
         Cursor c = db.rawQuery(selectQuery, null);
         if (c != null) {
             c.moveToFirst();

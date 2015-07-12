@@ -1,0 +1,58 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".AllMyUniquesWithoutSelect">
+
+    <ImageButton
+        android:id="@+id/addItem2"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignEnd="@+id/LinLay"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="20dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/iclauncher"
+
+        android:clickable="true"
+        android:elevation="20dp" />
+
+    <LinearLayout
+
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:id="@+id/LinLay"
+        >
+
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="wrap_content"
+            android:layout_height="2dp"
+            android:background="#cccccc" />
+
+
+        <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/swipe_refresh_layout_by_all_my_uniques"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/myunique"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical" />
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+
+
+
+
+    </LinearLayout>
+</RelativeLayout>

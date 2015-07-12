@@ -25,6 +25,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import org.w3c.dom.Text;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -71,7 +72,7 @@ public class DetailsViewOfEventChildFragment extends android.support.v4.app.Frag
         dateOfEvent = (TextView)detailsView.findViewById(R.id.date_of_detailedevent);
         titelOfUnique = (TextView)detailsView.findViewById(R.id.left_text_button2);
         dataBaseHelper = new DataBaseHelper(getActivity());
-        Unique fortestDB =new Unique();
+      /*  Unique fortestDB =new Unique();
         fortestDB.setName("TestName");
         fortestDB.seteMail("test@mail.de");
         fortestDB.setTag("1");
@@ -85,17 +86,17 @@ public class DetailsViewOfEventChildFragment extends android.support.v4.app.Frag
         dataBaseHelper.createUniqueEntry(fortestDB, idOfEvent);
 
         System.out.println(dataBaseHelper.isUniqueInDB("123"));
-
+*/
 
 
         event= dataBaseHelper.getEvent(idOfEvent);
         dataBaseHelper.closeDB();
 
-        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy  hh:mm");
+        DateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
         fromDateOfEvent = event.getFromDate();
         String eventFromDate = sdf.format(fromDateOfEvent);
 
-        SimpleDateFormat secondsdf = new SimpleDateFormat("hh:mm");
+        SimpleDateFormat secondsdf = new SimpleDateFormat("HH:mm");
         tillDateOfEvent = event.getTillDate();
         String eventTillHM = secondsdf.format(tillDateOfEvent);
         String wholeDateOfEvent=eventFromDate +" - " +eventTillHM;
