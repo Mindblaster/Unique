@@ -318,6 +318,20 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         cursor.close();
         return true;
     }
+    public  boolean isUniqueInMyDB(String serverID) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String Query = "Select * from " + TABLE_MYUNIQUES + " where " + KEY_SERVERID + " = " + "'" + serverID +"'";
+        Cursor cursor = db.rawQuery(Query, null);
+        Log.e(LOG, Query);
+        if(cursor.getCount() <= 0){
+            cursor.close();
+            return false;
+        }
+        cursor.close();
+        return true;
+    }
+
+
     /**
      * get single myUnique
      */

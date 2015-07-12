@@ -226,6 +226,7 @@ public class CreateEventFragment extends DialogFragment {
                              try {
                                  unique.setPosition(new LatLng(0,0));
                                  unique.setServerID(parseManager.uploadUnique(unique));
+                                 dataBaseHelper.setServerIDbyUnique(unique);
                              } catch (ParseException pe) {
                                  Log.e("Failure", "Error Failed to Upload Unique");
                              }
@@ -236,7 +237,6 @@ public class CreateEventFragment extends DialogFragment {
                              event = new Event(0, eventTitle.getText().toString(), startingDate, endingDate, eventLocation.getText().toString(), 0, false, listUnique, "kkk.jpg");
 
 
-                             //TODO: set serverID in Local Database
                              long localEventID = dataBaseHelper.createEventEntry(event);
                              dataBaseHelper.closeDB();
 

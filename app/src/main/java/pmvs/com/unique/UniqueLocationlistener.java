@@ -49,13 +49,13 @@ public class UniqueLocationlistener implements LocationListener {
 
         for(int i=0;i<uniques.size();i++){
             //If unique is not in Database
-            if(!dataBaseHelper.isUniqueInDB(uniques.get(i).getServerID())) {
-                dataBaseHelper.createUniqueEntry(uniques.get(i), localEventID);
+            if(!dataBaseHelper.isUniqueInMyDB(uniqueServerID)) {
+                if (!dataBaseHelper.isUniqueInDB(uniques.get(i).getServerID())) {
+                    dataBaseHelper.createUniqueEntry(uniques.get(i), localEventID);
+                }
             }
         }
         dataBaseHelper.closeDB();
-
-
     }
 
     @Override
