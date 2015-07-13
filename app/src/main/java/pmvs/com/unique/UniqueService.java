@@ -120,7 +120,8 @@ public class UniqueService extends Service{
                     getSystemService(Context.LOCATION_SERVICE);
 
             LocationListener locationListener = new UniqueLocationlistener(getApplicationContext(),uniqueServerID,localEventID);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10000,locationListener, Looper.getMainLooper());
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 1,locationListener, Looper.getMainLooper());
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 1,locationListener, Looper.getMainLooper());
             long sleepinterval=execTimeInMs/100;
 
             while (!toFinish)

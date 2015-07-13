@@ -306,24 +306,25 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return ("1".equals(result));
     }*/
 
-    public  boolean isUniqueInDB( String serverID) {
+    public boolean isUniqueInDB(String serverID) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String Query = "Select * from " + TABLE_UNIQUES + " where " + KEY_SERVERID + " = " + "'" + serverID +"'";
+        String Query = "Select * from " + TABLE_UNIQUES + " where " + KEY_SERVERID + " = " + "'" + serverID + "'";
         Cursor cursor = db.rawQuery(Query, null);
         Log.e(LOG, Query);
-        if(cursor.getCount() <= 0){
+        if (cursor.getCount() <= 0) {
             cursor.close();
             return false;
         }
         cursor.close();
         return true;
     }
-    public  boolean isUniqueInMyDB(String serverID) {
+
+    public boolean isUniqueInMyDB(String serverID) {
         SQLiteDatabase db = this.getReadableDatabase();
-        String Query = "Select * from " + TABLE_MYUNIQUES + " where " + KEY_SERVERID + " = " + "'" + serverID +"'";
+        String Query = "Select * from " + TABLE_MYUNIQUES + " where " + KEY_SERVERID + " = " + "'" + serverID + "'";
         Cursor cursor = db.rawQuery(Query, null);
         Log.e(LOG, Query);
-        if(cursor.getCount() <= 0){
+        if (cursor.getCount() <= 0) {
             cursor.close();
             return false;
         }
@@ -358,7 +359,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             unique.setText(c.getString(c.getColumnIndex(KEY_MYTEXT)));
             unique.setPhoneNumber(c.getString(c.getColumnIndex(KEY_MYPHONENUM)));
 
-       
+
         }
         return unique;
     }
@@ -514,13 +515,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         int count = cursor.getCount();
 
         cursor.close();
-       // System.out.println("count="+ count);
+        // System.out.println("count="+ count);
 
         return count;
     }
-
-
-
 
 
     // SELECT * FROM myuniques un, events ev, myuniques_events unev WHERE ev.ev_name = ‘EXPO’ AND ev.id = unev.ev_id AND un.id = unev.unique_id;
@@ -528,21 +526,19 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     /**
      * getting all Unique of one Event
      */
-    public Unique getMYUniqueOfEvent(String event_title) {
-        Unique myUniques = new Unique();
+    public Unique getMYUniqueOfEvent(long event_id) {
 
-        String selectQuery = "SELECT  * FROM " + TABLE_MYUNIQUES + " myun, "
-                + TABLE_EVENTS + " ev, " + TABLE_MYUNIQUE_EVENT + " myunev WHERE ev."
-                + KEY_EVENTS_ID + " = '" + event_title + "'" + " AND ev." + KEY_ID
-                + " = " + "myunev." + KEY_EVENTS_ID + " AND myun." + KEY_ID + " = "
-                + "myunev." + KEY_MYUNIQUES_ID;
+        String selectQuery = "SELECT un.* FROM " + TABLE_MYUNIQUES + " un, "
+                + TABLE_MYUNIQUE_EVENT + " unev WHERE "
+                + "unev." + KEY_EVENTS_ID + " = '" + event_id + "' AND un." + KEY_ID + " = "
+                + "unev." + KEY_MYUNIQUES_ID;
 
         Log.e(LOG, selectQuery);
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery(selectQuery, null);
         Unique unique = new Unique();
-        if(c.getCount() < 0){
+        if (c.getCount() > 0) {
             if (c.moveToFirst()) {
 
                 unique.setLocalID(c.getInt((c.getColumnIndex(KEY_ID))));
@@ -556,13 +552,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 unique.setText(c.getString(c.getColumnIndex(KEY_MYTEXT)));
                 return unique;
             }
-        }
-        else {
-            unique.setName("TestName");
-            unique.setText("mein Text");
+        } else {
+            unique.setName("Ina");
+            unique.setText("Hallo Welt!");
             return unique;
         }
-
 
 
         return unique;
@@ -605,6 +599,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return db.update(TABLE_UNIQUES, values, KEY_ID + " = ?",
                 new String[]{String.valueOf(unique.getLocalID())});
     }
+
     /**
      * set serverID for MyUnique
      */
@@ -668,7 +663,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         // insert row
         long event_id = db.insert(TABLE_EVENTS, null, values);
         //just because of needed event id after inserting in the DB
-            createMyUniqueEventEntry(myunqiue_id, event_id);
+        createMyUniqueEventEntry(myunqiue_id, event_id);
+
 
         return event_id;
     }
@@ -706,10 +702,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
         return events;
     }
-    //SELECT * FROM EVENTS where fromdate<actualtime;
 
+    //SELECT * FROM EVENTS where fromdate<actualtime;
     /**
-     * getting all events
+     * getting all past events
      */
     public List<Event> getAllPastEvents() {
         List<Event> events = new ArrayList<Event>();
@@ -741,8 +737,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
         return events;
     }
-    //SELECT * FROM EVENTS where fromdate>actualtime;
 
+    //SELECT * FROM EVENTS where fromdate>actualtime;
     /**
      * getting all events  fromdate>actualtime;
      */
@@ -872,7 +868,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         values.put(KEY_EVENTS_ID, event_id);
 
         long id = db.insert(TABLE_UNIQUE_EVENT, null, values);
-        Log.d(LOG, +unique_id +" by "+event_id+ " is uniqueId iby Event id in "+ id+ "Id in Unique-Event Table ");
+        Log.d(LOG, +unique_id + " by " + event_id + " is uniqueId iby Event id in " + id + "Id in Unique-Event Table ");
         return id;
     }
 
@@ -887,8 +883,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         values.put(KEY_EVENTS_ID, event_id);
 
         long id = db.insert(TABLE_MYUNIQUE_EVENT, null, values);
-
+        System.out.println("inserted Id of myunique" + myunique_id + "inserted" + event_id);
         return id;
+
     }
 
     // closing database

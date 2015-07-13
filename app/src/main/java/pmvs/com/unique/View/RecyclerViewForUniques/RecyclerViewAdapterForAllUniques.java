@@ -43,21 +43,21 @@ public class RecyclerViewAdapterForAllUniques extends RecyclerView.Adapter<Recyc
             viewHolder.message.setText(uniqueForAllUniquesView.getText());
             //todo change Icon
             //viewHolder.unique_icon.setImageBitmap("");
-            if(uniqueForAllUniquesView.getFacebookName().length()>2){
+            if(uniqueForAllUniquesView.getFacebookName()!= null){
                 Log.e(uniqueForAllUniquesView.getFacebookName(), "facebook");
                 viewHolder.fb_icon.setVisibility(View.VISIBLE);
             }
             else {
                 viewHolder.fb_icon.setVisibility(View.INVISIBLE);
                 }
-            if(uniqueForAllUniquesView.getTwitterName().length()>2){
+            if(uniqueForAllUniquesView.getTwitterName() != null){
 
                 viewHolder.twitter_icon.setVisibility(View.VISIBLE);
             }
             else {
                 viewHolder.twitter_icon.setVisibility(View.INVISIBLE);
             }
-            if(uniqueForAllUniquesView.getPhoneNumber().length()>2){
+            if(uniqueForAllUniquesView.getPhoneNumber() != null){
                 viewHolder.tel_icon.setVisibility(View.VISIBLE);
             }
             else {

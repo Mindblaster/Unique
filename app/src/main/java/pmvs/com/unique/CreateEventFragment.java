@@ -234,7 +234,7 @@ public class CreateEventFragment extends DialogFragment {
 
 // public Event(int initId, String initTitle, Date initFrom, Date initTill, String initAddress, int initMyUniqueID, boolean initUniqueShared, List<Unique> initReceivedUniques, String initEventPic) {
                              List<Unique> listUnique = new ArrayList<>();
-                             event = new Event(0, eventTitle.getText().toString(), startingDate, endingDate, eventLocation.getText().toString(), 0, false, listUnique, "kkk.jpg");
+                             event = new Event(0, eventTitle.getText().toString(), startingDate, endingDate, eventLocation.getText().toString(), unique.getLocalID(), false, listUnique, "kkk.jpg");
 
 
                              long localEventID = dataBaseHelper.createEventEntry(event);

@@ -31,6 +31,7 @@ import pmvs.com.unique.model.Unique;
 
 /**
  * Created by inot on 15.06.15.
+ * Fragment to show all events
  */
 public class AllEventsFragment extends android.support.v4.app.Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
@@ -165,7 +166,8 @@ public class AllEventsFragment extends android.support.v4.app.Fragment implement
     @Override
     public void onRefresh() {
         swipeRefreshLayout.setRefreshing(true);
-        mFutureAdapter.notifyDataSetChanged();
+        mFutureAdapter = new RecyclerAdapterForFutureEvents(retrieveFutureEvents());
+        mPastAdapter = new RecyclerAdapterForPastEvents(retrievePastEvents(), getActivity());
         // stopping swipe refresh
         swipeRefreshLayout.setRefreshing(false);
     }

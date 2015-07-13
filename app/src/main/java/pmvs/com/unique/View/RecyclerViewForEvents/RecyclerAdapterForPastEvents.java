@@ -48,7 +48,7 @@ public class RecyclerAdapterForPastEvents extends RecyclerView.Adapter<RecyclerV
         //todo retrieve real amount from db
         Integer idForCast = position;
         long positionInLong = idForCast.longValue();
-        int amountOfAllUniques  = dataBaseHelper.getCountOfAllUniquesOfEvent(positionInLong);
+        int amountOfAllUniques  = dataBaseHelper.getCountOfAllUniquesOfEvent(eventForRecyclerView.getId());
         System.out.println(amountOfAllUniques);
         Integer amountInt = amountOfAllUniques;
 

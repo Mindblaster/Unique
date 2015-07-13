@@ -41,7 +41,7 @@ public class UniqueLocationlistener implements LocationListener {
 
         //Downloads Uniques
         try {
-            uniques = parseManager.getUniquesByRad(50, latLng, uniqueServerID);
+            uniques = parseManager.getUniquesByRad(10000, latLng, uniqueServerID);
         }
         catch(ParseException pe){
             System.out.println("Donwloading Uniques failed");

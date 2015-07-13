@@ -34,6 +34,7 @@ import java.util.List;
 
 /**
  * Created by inot on 26.05.15.
+ * Fragment to show details of an event
  */
 
 
@@ -61,7 +62,9 @@ public class DetailsViewOfEventChildFragment extends android.support.v4.app.Frag
     private Unique myUnique;
     private long idOfEvent;
 
-
+    /**
+     * Setting the view elements
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
       //  Log.d("MaterialNavigationDrawer Master-Child", "Child created");
@@ -79,25 +82,9 @@ public class DetailsViewOfEventChildFragment extends android.support.v4.app.Frag
         textOfUnique = (TextView)detailsView.findViewById(R.id.descripton_of_unique);
 
         dataBaseHelper = new DataBaseHelper(getActivity());
-      /*  Unique fortestDB =new Unique();
-        fortestDB.setName("TestName");
-        fortestDB.seteMail("test@mail.de");
-        fortestDB.setTag("1");
-        fortestDB.setText("langer Textblablablabla");
-        fortestDB.setFacebookName("testfbname");
-        fortestDB.setPhoneNumber("000000222222");
-        fortestDB.setServerID("123");
-        fortestDB.setTwitterName("twitttestname");
-        LatLng bla=new LatLng(Double.parseDouble("12.34"),Double.parseDouble("44.44"));
-        fortestDB.setPosition((bla));
-        dataBaseHelper.createUniqueEntry(fortestDB, idOfEvent);
-
-        System.out.println(dataBaseHelper.isUniqueInDB("123"));
-*/
-
-
         event= dataBaseHelper.getEvent(idOfEvent);
-        //   myUnique=dataBaseHelper.getMYUniqueOfEvent(idOfEventInString);
+        myUnique=dataBaseHelper.getMYUniqueOfEvent(idOfEvent);
+        // System.out.println(myUnique.getName());
         dataBaseHelper.closeDB();
 
         DateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
@@ -111,8 +98,9 @@ public class DetailsViewOfEventChildFragment extends android.support.v4.app.Frag
 
         titel.setText(event.getTitle());
         adress.setText(event.getAddress());
-  //      sharedUnique.setText("shared unique");
-//        textOfUnique.setText(myUnique.getName());
+        sharedUnique.setText("shared unique");
+        nameOfUnique.setText(myUnique.getName());
+        textOfUnique.setText(myUnique.getText());
 
         dateOfEvent.setText(wholeDateOfEvent);
 
